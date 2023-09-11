@@ -26,11 +26,11 @@ void SparseMatrix::get_num(int &a, int cmp)
     }
 }
 
-void SparseMatrix::push(Line *oldline, LineItem &a)
+void SparseMatrix::push(Line* &oldline, LineItem &a)
 {
     if (oldline->size == 0)
     {
-        Line *oldline = new Line[1];
+        oldline->root = new LineItem[1];
         *(oldline->root) = a;
     }
     else
@@ -38,6 +38,7 @@ void SparseMatrix::push(Line *oldline, LineItem &a)
         LineItem *rt = oldline->root;
         while (rt->next)
             rt = rt->next;
+        rt->next = new LineItem[1];
         *(rt->next) = a;
     }
     (oldline->size)++;
@@ -48,7 +49,17 @@ void SparseMatrix::erase(Matrix &matr)
     if (matr.row_size != 0)
     {
         for (int i = 0; i < matr.row_size; i++)
+        {
+            LineItem *rt = matr.lines[i]->root;
+            LineItem *prev;
+            while (rt)
+            {
+                prev = rt->next;
+                delete rt;
+                rt = prev;
+            }
             delete [] matr.lines[i];
+        }
     }
     delete [] matr.lines;
 }
@@ -104,6 +115,7 @@ Matrix SparseMatrix::input()
             get_num(a.info.num);
             std::cout << "Write coordinates of the number (x): ";
             get_num(a.info.x, matr.row_size);
+            matr.lines[a.info.x] = new Line[1];
             std::cout << "Write coordinates of the number (y): ";
             do {get_num(a.info.y, matr.col_size);} while (wrong_coord(a.info.y, matr.lines[a.info.x]));
             a.next = nullptr;

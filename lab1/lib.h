@@ -28,7 +28,7 @@ namespace SparseMatrix
     Matrix input();
     void output(const char*, Matrix&);
     void erase(Matrix&);
-    void push(Line*, LineItem&);
+    void push(Line*&, LineItem&);
     int *res_vect(const Matrix&, bool (*cmp_s1) (int), bool (*cmp_s2) (int));
 }
 
