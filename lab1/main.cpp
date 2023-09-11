@@ -19,7 +19,7 @@ int main() {
         erase(matr);
         return 1;
     }
-    catch(const std::exception& e) { // в случае прочих исключений
+    catch(const std::exception& e) {
         std::cerr << e.what() << std::endl;
         erase(matr);
         return 1;
