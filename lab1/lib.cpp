@@ -45,9 +45,9 @@ void SparseMatrix::push(Line *oldline, LineItem &a)
 
 void SparseMatrix::erase(Matrix &matr)
 {
-    if (matr.size != 0)
+    if (matr.row_size != 0)
     {
-        for (int i = 0; i < matr.size; i++)
+        for (int i = 0; i < matr.row_size; i++)
             delete [] matr.lines[i];
     }
     delete [] matr.lines;
@@ -56,7 +56,7 @@ void SparseMatrix::erase(Matrix &matr)
 void SparseMatrix::output(const char *msg, Matrix &matr)
 {
     std::cout << msg << std::endl;
-    for (int i = 0; i < matr.size; i++)
+    for (int i = 0; i < matr.row_size; i++)
     {
         std::cout << "Non-zero line elements of line #" << i << ": ";
         LineItem *rt = matr.lines[i]->root;
@@ -69,37 +69,93 @@ void SparseMatrix::output(const char *msg, Matrix &matr)
     }
 }
 
+int wrong_coord(int y, Line *row)
+{
+    if (row->size == 0) return 0;
+    LineItem *rt = row->root;
+    while (rt)
+    {
+        if (rt->info.y == y) return 1;
+        rt = rt->next;
+    }
+    return 0;
+}
+
 Matrix SparseMatrix::input()
 {
     Matrix matr;
-    int i = 0;
     try
     {
         int size;
         std::cout << "Write number of the rows: ";
         get_num(size, -1);
         matr.lines = new Line*[size];
-        matr.size = size;
-        while (true)
+        matr.row_size = size;
+        std::cout << "Write number of the columns: ";
+        get_num(size, -1);
+        matr.col_size = size;
+        int num;
+        std::cout << "Write number of matrix numbers: ";
+        get_num(num, -1);
+        for (int i = 0; i < num; i++)
         {
             LineItem a;
             std::cout << "Write number of the matrix: ";
             get_num(a.info.num);
-            std::cout << std::endl << "Write coordinates of the number (x): ";
-            get_num(a.info.x, matr.size);
-            std::cout << std::endl << "Write coordinates of the number (y): ";
-            get_num(a.info.y, matr.size);
+            std::cout << "Write coordinates of the number (x): ";
+            get_num(a.info.x, matr.row_size);
+            std::cout << "Write coordinates of the number (y): ";
+            do {get_num(a.info.y, matr.col_size);} while (wrong_coord(a.info.y, matr.lines[a.info.x]));
             a.next = nullptr;
             push(matr.lines[a.info.x], a);
         }
     }
     catch(const std::exception &e)
     {
-        if  (e.what() != "Failed to read number: EOF" || i == 0)
-        {
-            erase(matr);
-            throw;
-        }
+        erase(matr);
+        throw;
     }
     return matr;
+}
+
+bool cmp1(int num)
+{
+    while (num)
+    {
+        if (num % 10 == 0) return 0;
+        num /= 10;
+    }
+    return 1;
+}
+
+bool cmp2(int num)
+{
+    int kol = 0;
+    while (num)
+    {
+        if (num % 10 == 1) kol++;
+        num /= 10;
+    }
+    if (kol == 2) return 1;
+    return 0;
+}
+
+int *SparseMatrix::res_vect(const Matrix &matr, bool (*cmp_s1) (int), bool (*cmp_s2) (int))
+{
+    int *res = new int[matr.row_size];
+    for (int i = 0; i < matr.row_size; i++)
+    {
+        int s1 = 0, s2 = 0;
+        LineItem* rt = matr.lines[i]->root;
+        for (int i = 0; i < matr.lines[i]->size; i++)
+        {
+            if (cmp_s1(rt->info.num))
+                s1 += rt->info.num;
+            if (cmp_s2(rt->info.num))
+                s2 += rt->info.num;
+            rt = rt->next;
+        }
+        res[i] = s1 - s2;
+    }
+    return res;
 }

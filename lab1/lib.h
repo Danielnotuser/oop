@@ -20,7 +20,8 @@ namespace SparseMatrix
 
     typedef struct Matrix {
         Line **lines;
-        int size = 0;
+        int row_size = 0;
+        int col_size = 0;
     } Matrix;
 
     void get_num(int&, int cmp = 0);
@@ -28,6 +29,10 @@ namespace SparseMatrix
     void output(const char*, Matrix&);
     void erase(Matrix&);
     void push(Line*, LineItem&);
+    int *res_vect(const Matrix&, bool (*cmp_s1) (int), bool (*cmp_s2) (int));
 }
+
+bool cmp1(int);
+bool cmp2(int);
 
 #endif

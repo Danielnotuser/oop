@@ -1,13 +1,16 @@
 #include <iostream>
 #include "lib.h"
+
 using namespace SparseMatrix;
 
 int main() {
     Matrix matr;
     try {
         matr = input(); 
-        output("Sourced matrix", matr); 
-//      std::cout << "Result: " << res << std::endl;
+        output("Sourced matrix: ", matr); 
+        std::cout << "Result: ";
+        int *res = res_vect(matr, cmp1, cmp2);
+        for (int i = 0; i < matr.row_size; i++) std::cout << res[i];
         erase(matr);
     }
     catch(const std::bad_alloc& ba) { 
