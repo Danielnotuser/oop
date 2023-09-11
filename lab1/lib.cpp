@@ -15,7 +15,7 @@ void SparseMatrix::get_num(int &a, int cmp)
             throw std::runtime_error("Failed to read number: EOF");
         else if (std::cin.bad()) 
             throw std::runtime_error(std::string("Failed to read number: ") + std::strerror(errno));
-        else if ((std::cin.fail()) || (cmp > 0 && (a <= 0 || a >= cmp)) || (cmp < 0 && a <= 0))
+        else if ((std::cin.fail()) || (cmp > 0 && (a < 0 || a >= cmp)) || (cmp < 0 && a <= 0))
         { 
             std::cin.clear(); 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -50,18 +50,21 @@ void SparseMatrix::erase(Matrix &matr)
     {
         for (int i = 0; i < matr.row_size; i++)
         {
-            LineItem *rt = matr.lines[i]->root;
-            LineItem *prev;
-            while (rt)
+            if (matr.lines[i])
             {
-                prev = rt->next;
-                delete rt;
-                rt = prev;
+                LineItem *rt = matr.lines[i]->root;
+                LineItem *prev;
+                while (rt)
+                {
+                    prev = rt->next;
+                    delete rt;
+                    rt = prev;
+                }
+                delete [] matr.lines[i];
             }
-            delete [] matr.lines[i];
         }
+        delete [] matr.lines;
     }
-    delete [] matr.lines;
 }
 
 void SparseMatrix::output(const char *msg, Matrix &matr)
@@ -111,20 +114,19 @@ Matrix SparseMatrix::input()
         for (int i = 0; i < num; i++)
         {
             LineItem a;
-            std::cout << "Write number of the matrix: ";
-            get_num(a.info.num);
             std::cout << "Write coordinates of the number (x): ";
             get_num(a.info.x, matr.row_size);
             matr.lines[a.info.x] = new Line[1];
             std::cout << "Write coordinates of the number (y): ";
             do {get_num(a.info.y, matr.col_size);} while (wrong_coord(a.info.y, matr.lines[a.info.x]));
+            std::cout << "Write number of the matrix: ";
+            get_num(a.info.num);
             a.next = nullptr;
             push(matr.lines[a.info.x], a);
         }
     }
     catch(const std::exception &e)
     {
-        erase(matr);
         throw;
     }
     return matr;

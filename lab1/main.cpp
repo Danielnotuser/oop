@@ -11,6 +11,7 @@ int main() {
         std::cout << "Result: ";
         int *res = res_vect(matr, cmp1, cmp2);
         for (int i = 0; i < matr.row_size; i++) std::cout << res[i];
+        delete [] res;
         erase(matr);
     }
     catch(const std::bad_alloc& ba) { 
