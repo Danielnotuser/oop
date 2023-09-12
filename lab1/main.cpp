@@ -10,7 +10,8 @@ int main() {
         output("Sourced matrix: ", matr); 
         std::cout << "Result: ";
         int *res = res_vect(matr, cmp1, cmp2);
-        for (int i = 0; i < matr.row_size; i++) std::cout << res[i];
+        for (int i = 0; i < matr.row_size; i++) std::cout << res[i] << " ";
+        std::cout << std::endl;
         delete [] res;
         erase(matr);
     }

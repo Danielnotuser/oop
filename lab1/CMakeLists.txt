@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(oopmatr)
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -g")
 add_library(lib lib.h lib.cpp)
 link_libraries(lib)
 add_executable(main main.cpp)

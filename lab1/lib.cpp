@@ -15,7 +15,8 @@ void SparseMatrix::get_num(int &a, int cmp)
             throw std::runtime_error("Failed to read number: EOF");
         else if (std::cin.bad()) 
             throw std::runtime_error(std::string("Failed to read number: ") + std::strerror(errno));
-        else if ((std::cin.fail()) || (cmp > 0 && (a < 0 || a >= cmp)) || (cmp < 0 && a <= 0))
+        else if ((std::cin.fail()) || (cmp == 0 && a == 0) ||
+        	(cmp > 0 && (a < 0 || a >= cmp)) || (cmp < 0 && a <= 0))
         { 
             std::cin.clear(); 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -30,7 +31,7 @@ void SparseMatrix::push(Line* &oldline, LineItem &a)
 {
     if (oldline->size == 0)
     {
-        oldline->root = new LineItem[1];
+        oldline->root = new LineItem;
         *(oldline->root) = a;
     }
     else
@@ -38,7 +39,7 @@ void SparseMatrix::push(Line* &oldline, LineItem &a)
         LineItem *rt = oldline->root;
         while (rt->next)
             rt = rt->next;
-        rt->next = new LineItem[1];
+        rt->next = new LineItem;
         *(rt->next) = a;
     }
     (oldline->size)++;
@@ -60,30 +61,37 @@ void SparseMatrix::erase(Matrix &matr)
                     delete rt;
                     rt = prev;
                 }
-                delete [] matr.lines[i];
+                delete matr.lines[i];
             }
         }
         delete [] matr.lines;
     }
 }
 
-void SparseMatrix::output(const char *msg, Matrix &matr)
+void SparseMatrix::output(const char *msg, Matrix matr)
 {
     std::cout << msg << std::endl;
     for (int i = 0; i < matr.row_size; i++)
     {
-        std::cout << "Non-zero line elements of line #" << i << ": ";
-        LineItem *rt = matr.lines[i]->root;
-        while (rt)
+    	std::cout << "Non-zero line elements of line #" << i << ": ";
+        if (matr.lines[i])
         {
-            std::cout << rt->info.num << "(" << rt->info.x << ";" << rt->info.y << ") ";
-            rt = rt->next;
+	        LineItem *rt = matr.lines[i]->root;
+	        while (rt)
+	        {
+	            std::cout << rt->info.num << "(" << rt->info.x << ";" << rt->info.y << ") ";
+	            rt = rt->next;
+	        }
+	        std::cout << std::endl;
         }
-        std::cout << std::endl;
+        else
+        {
+        	std::cout << "Only zero elements." << std::endl;
+        }
     }
 }
 
-int wrong_coord(int y, Line *row)
+int wrong_coord(int y, Line* row)
 {
     if (row->size == 0) return 0;
     LineItem *rt = row->root;
@@ -103,7 +111,7 @@ Matrix SparseMatrix::input()
         int size;
         std::cout << "Write number of the rows: ";
         get_num(size, -1);
-        matr.lines = new Line*[size];
+        matr.lines = new Line*[size] {nullptr};//std::fill
         matr.row_size = size;
         std::cout << "Write number of the columns: ";
         get_num(size, -1);
@@ -113,22 +121,25 @@ Matrix SparseMatrix::input()
         get_num(num, -1);
         for (int i = 0; i < num; i++)
         {
-            LineItem a;
-            std::cout << "Write coordinates of the number (x): ";
-            get_num(a.info.x, matr.row_size);
-            matr.lines[a.info.x] = new Line[1];
-            std::cout << "Write coordinates of the number (y): ";
-            do {get_num(a.info.y, matr.col_size);} while (wrong_coord(a.info.y, matr.lines[a.info.x]));
-            std::cout << "Write number of the matrix: ";
-            get_num(a.info.num);
-            a.next = nullptr;
-            push(matr.lines[a.info.x], a);
-        }
-    }
-    catch(const std::exception &e)
-    {
-        throw;
-    }
+	       LineItem a;
+	       std::cout << "Write coordinates of the number (x): ";
+	       get_num(a.info.x, matr.row_size);
+	       if (!matr.lines[a.info.x]) matr.lines[a.info.x] = new Line;
+	       do {
+	  			std::cout << "Write coordinates of the number (y): ";
+	       		get_num(a.info.y, matr.col_size);
+	       } while (wrong_coord(a.info.y, matr.lines[a.info.x]));
+	       std::cout << "Write number of the line: ";
+	       get_num(a.info.num);
+	       a.next = nullptr;
+	 	   push(matr.lines[a.info.x], a);
+ 	    }
+ 	}
+ 	catch(...)
+ 	{
+ 		erase(matr);
+ 		throw;
+ 	}
     return matr;
 }
 
@@ -160,16 +171,23 @@ int *SparseMatrix::res_vect(const Matrix &matr, bool (*cmp_s1) (int), bool (*cmp
     for (int i = 0; i < matr.row_size; i++)
     {
         int s1 = 0, s2 = 0;
-        LineItem* rt = matr.lines[i]->root;
-        for (int i = 0; i < matr.lines[i]->size; i++)
+        if (matr.lines[i])
         {
-            if (cmp_s1(rt->info.num))
-                s1 += rt->info.num;
-            if (cmp_s2(rt->info.num))
-                s2 += rt->info.num;
-            rt = rt->next;
+        	LineItem* rt = matr.lines[i]->root;
+        	while (rt)
+        	{
+        		if (cmp_s1(rt->info.num))
+        			s1 += rt->info.num;
+        		if (cmp_s2(rt->info.num))
+        		    s2 += rt->info.num;
+        		rt = rt->next;
+        	}
+            res[i] = s1 - s2;	
         }
-        res[i] = s1 - s2;
+        else
+        {
+        	res[i] = 0;
+        }
     }
     return res;
 }
