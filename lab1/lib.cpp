@@ -132,6 +132,7 @@ Matrix SparseMatrix::input()
 	       get_num(a.info.num);
 	       a.next = nullptr;
 	 	   if (a.info.num != 0) push(matr.lines[a.info.x], a);
+	 	   else {delete matr.lines[a.info.x]; matr.lines[a.info.x] = nullptr;}
  	    }
  	}
  	catch(...)
