@@ -15,8 +15,7 @@ void SparseMatrix::get_num(int &a, int cmp)
             throw std::runtime_error("Failed to read number: EOF");
         else if (std::cin.bad()) 
             throw std::runtime_error(std::string("Failed to read number: ") + std::strerror(errno));
-        else if ((std::cin.fail()) || (cmp == 0 && a == 0) ||
-        	(cmp > 0 && (a < 0 || a >= cmp)) || (cmp < 0 && a <= 0))
+        else if ((std::cin.fail()) || (cmp > 0 && (a < 0 || a >= cmp)) || (cmp < 0 && a <= 0))
         { 
             std::cin.clear(); 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -132,7 +131,7 @@ Matrix SparseMatrix::input()
 	       std::cout << "Write number of the line: ";
 	       get_num(a.info.num);
 	       a.next = nullptr;
-	 	   push(matr.lines[a.info.x], a);
+	 	   if (a.info.num != 0) push(matr.lines[a.info.x], a);
  	    }
  	}
  	catch(...)
