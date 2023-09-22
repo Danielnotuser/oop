@@ -46,7 +46,7 @@ namespace Lib {
 	    return c;
 	}
 	
-	std::strong_ordering operator <=>(Card &rc)
+	std::strong_ordering Card::operator<=>(const Card &rc) const
 	{
 		if (suit != rc.suit) 
 			throw std::invalid_argument("suits must be equal");
@@ -57,5 +57,6 @@ namespace Lib {
 		else
 			return std::strong_ordering::equal;
 	}
+
 }
 
