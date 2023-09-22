@@ -1,9 +1,6 @@
 #ifndef CARD_H
 #define CARD_H
 
-#include <iostream>
-#include <compare>
-
 namespace Lib {
     class Card {
         private:
@@ -23,10 +20,12 @@ namespace Lib {
             // getters
             int getR() const {return rank;}
             int getS() const {return suit;}
-
-
-    }
-    std::ostream & operator << (std::ostream &, const Card &);
+            // overload
+            friend std::ostream &operator<<(std::ostream &, const Card &);
+            bool operator<=>(Card &rc) const;
+            
+    };
+    
 }
 
 #endif
