@@ -6,8 +6,8 @@ namespace Lib {
 	void Card::randcard()
 	{
 	    srand(time(NULL));
-	    int s = rand() % 4 + 1;
-	    int r = rand() % 13 + 2;
+	    int s = rand() % 4 + 1; // 1..4
+	    int r = rand() % 13 + 2; // 2..14
 	    this->suit = s;
 	    this->rank = r;
 	}
@@ -20,7 +20,7 @@ namespace Lib {
 	        throw std::invalid_argument("invalid suit");
 	}
 	
-	std::ostream &operator<<(std::ostream &c, const Card &card)
+	std::ostream &operator <<(std::ostream &c, const Card &card)
 	{
 	    int r = card.getR();
 	    if (r <= 10)
@@ -46,9 +46,16 @@ namespace Lib {
 	    return c;
 	}
 	
-	bool operator<=>(Card &rc)
+	std::strong_ordering operator <=>(Card &rc)
 	{
-		
+		if (suit != rc.suit) 
+			throw std::invalid_argument("suits must be equal");
+		if (rank < rc.rank)
+			return std::strong_ordering::less;
+		else if (rank > rc.rank)
+			return std::strong_ordering::greater;
+		else
+			return std::strong_ordering::equal;
 	}
 }
 

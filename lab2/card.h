@@ -22,7 +22,7 @@ namespace Lib {
             int getS() const {return suit;}
             // overload
             friend std::ostream &operator<<(std::ostream &, const Card &);
-            bool operator<=>(Card &rc) const;
+            std::strong_ordering operator<=>(Card &rc) const;
             
     };
     
