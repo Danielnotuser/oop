@@ -21,7 +21,7 @@ namespace Lib {
 	
 	std::ostream &operator <<(std::ostream &c, const Card &card)
 	{
-	    int r = card.rank;
+	    int r = card.getR();
 	    if (r <= 10)
 	        c << r;
 	    else
@@ -34,7 +34,7 @@ namespace Lib {
 	            case 14: c << "A"; break;
 	        }
 	    }
-	    int s = card.suit;
+	    int s = card.getS();
 	    switch (s)
 	    {
 	        case 1: c << "♥"; break; // hearts
