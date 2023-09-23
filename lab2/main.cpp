@@ -6,6 +6,7 @@ using namespace Lib;
 
 int main()
 {
+    srand(time(NULL));
     int r, s;
     Card c2;
     std::cout << "Random card: " << c2 << std::endl;

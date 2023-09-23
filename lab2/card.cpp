@@ -5,7 +5,6 @@
 namespace Lib {
 	void Card::randcard()
 	{
-	    srand(time(NULL));
 	    int s = rand() % 4 + 1; // 1..4
 	    int r = rand() % 13 + 2; // 2..14
 	    this->suit = s;
@@ -22,7 +21,7 @@ namespace Lib {
 	
 	std::ostream &operator <<(std::ostream &c, const Card &card)
 	{
-	    int r = card.getR();
+	    int r = card.rank;
 	    if (r <= 10)
 	        c << r;
 	    else
@@ -35,7 +34,7 @@ namespace Lib {
 	            case 14: c << "A"; break;
 	        }
 	    }
-	    int s = card.getS();
+	    int s = card.suit;
 	    switch (s)
 	    {
 	        case 1: c << "♥"; break; // hearts
@@ -46,16 +45,16 @@ namespace Lib {
 	    return c;
 	}
 	
-	std::strong_ordering Card::operator<=>(const Card &rc) const
+	std::partial_ordering Card::operator<=>(const Card &rc) const
 	{
 		if (suit != rc.suit) 
-			throw std::invalid_argument("suits must be equal");
+			return std::partial_ordering::unordered;
 		if (rank < rc.rank)
-			return std::strong_ordering::less;
+			return std::partial_ordering::less;
 		else if (rank > rc.rank)
-			return std::strong_ordering::greater;
+			return std::partial_ordering::greater;
 		else
-			return std::strong_ordering::equal;
+			return std::partial_ordering::equivalent;
 	}
 
 }

@@ -21,8 +21,8 @@ namespace Lib {
             int getR() const {return rank;}
             int getS() const {return suit;}
             // overload
-            friend std::ostream &operator<<(std::ostream&, const Card&);
-            std::strong_ordering operator<=>(const Card&) const;
+            friend std::ostream &Lib::operator<<(std::ostream&, const Card&);
+            std::partial_ordering operator<=>(const Card&) const;
             bool operator == (const Card&) const = default;
             
     };
