@@ -5,14 +5,14 @@
 
 namespace Lib {
 
-	void Deck::full_deck()
+	void FullDeck::full_deck()
 	{
 		int k = 0;
 		for (int i = 2; i < 15; i++)
 		{
 			for (int j = 1; j < 5; j++)
 			{
-				(Deck::fd)[k].set(i, j);
+				arr[k].set(i, j);
 			    k++;
 			}
 		}	
@@ -21,7 +21,7 @@ namespace Lib {
     Deck::Deck(int n) : size(n)
     {
         deck = new Card[size];
-        std::copy(deck, deck + size, Deck::fd);
+        std::copy(deck, deck + size, fd.arr);
         std::shuffle(deck, deck + size, std::random_device());
     }
 

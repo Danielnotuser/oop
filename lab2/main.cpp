@@ -20,7 +20,6 @@ int main()
     std::cout << "Lower: " << (c1 < c2) << std::endl;
     std::cout << "Greater: " << (c1 > c2) << std::endl;
 */
-	Deck::full_deck(); 
 	Deck d(5);
 	std::cout << d;
     return 0;

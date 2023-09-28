@@ -4,14 +4,24 @@
 #include "card.h"
 
 namespace Lib {
+
+    class FullDeck {
+        friend class Card;
+        private:
+            void full_deck();
+        public:
+            Card arr[52];
+            FullDeck() {full_deck();}
+    };
+
     class Deck {
         friend class Card;
+        friend class FullDeck;
         private:
             Card *deck;
             int size;
+            FullDeck fd;
         public:
-        	static inline Card fd[52];
-        	static void full_deck();
             // contructors
             Deck(int n = 52); // deck with exact number of cards
             // destructors
