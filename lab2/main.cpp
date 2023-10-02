@@ -22,5 +22,13 @@ int main()
 */
 	Deck d(5);
 	std::cout << d;
+    d.add_rand();
+    std::cout << "add rand: " << d;
+    d.shuffle();
+    std::cout << "shuffled: " << d;
+    std::cout << "unique? " << d.unique();
+    Card c(1, 2);
+    d.add(c);
+    std::cout << "add " << c << ": " << d;
     return 0;
 }

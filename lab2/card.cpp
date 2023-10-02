@@ -44,6 +44,15 @@ namespace Lib {
 	    }
 	    return c;
 	}
+
+	std::istream &operator>>(std::istream &c, Card &card)
+	{
+		int r, s;
+		c >> r >> s;
+		if (c.good())
+			card = Card(r, s);
+		return c;
+	}
 	
 	std::partial_ordering Card::operator<=>(const Card &rc) const
 	{

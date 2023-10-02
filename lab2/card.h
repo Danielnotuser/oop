@@ -22,6 +22,7 @@ namespace Lib {
             int getS() const {return suit;}
             // overload
             friend std::ostream &operator<<(std::ostream&, const Card&);
+            friend std::istream &operator>>(std::istream&, Card&);
             std::partial_ordering operator<=>(const Card&) const;
             bool operator == (const Card&) const = default;
             
