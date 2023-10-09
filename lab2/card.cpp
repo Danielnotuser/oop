@@ -50,7 +50,13 @@ namespace Lib {
 		int r, s;
 		c >> r >> s;
 		if (c.good())
-			card = Card(r, s);
+		{
+			try {
+				card = Card(r, s);
+			}
+			catch(...) {}
+		}
+			
 		return c;
 	}
 	

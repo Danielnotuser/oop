@@ -75,8 +75,15 @@ namespace Lib {
 		return *this;
 	}
 
-	Card &Deck::operator[](int ind) const
+
+	Card Deck::operator[](int ind) const
 	{
+		if (ind < 0 || ind >= size) 
+			throw std::invalid_argument("invalid index");
+		return deck[ind];
+	}
+
+	Card &Deck::operator[](int ind) {
 		if (ind < 0 || ind >= size) 
 			throw std::invalid_argument("invalid index");
 		return deck[ind];
@@ -96,12 +103,14 @@ namespace Lib {
 	std::istream &operator>>(std::istream &c, Deck &d)
 	{
 		int sz;
-		std::cout << "Enter size: ";
 		c >> sz;
 		if (c.good())
 		{
-			Deck tmp = Deck(sz);
-			d = std::move(tmp);
+			try {
+				Deck tmp = Deck(sz);
+				d = std::move(tmp);
+			}
+			catch (...) {}
 		}
 		return c;
 	}
@@ -114,6 +123,23 @@ namespace Lib {
 		std::copy(deck, deck + size, d.deck);
 		std::copy(other.deck, other.deck + other.size, d.deck + size);
 		return d;
+	}
+
+	Deck &Deck::operator >>=(Deck &a, Deck &b)
+	{
+		Card c(a[a.size - 1].getR(), a[a.size - 1].getS());
+		Card *tmp1 = new Card[a.size - 1];
+		std::copy(a.deck, a.deck + size, tmp1.deck);
+		delete [] a.deck;
+		a.size -= 1;
+		a.deck = tmp1;
+		Card *tmp2 = new Card[b.size + 1];
+		std::copy(b.deck, b.deck + size, tmp2.deck);
+		tmp2[b.size] = c;
+		delete [] b.deck;
+		b.size += 1;
+		b.deck = tmp2;
+		return a;
 	}
 
 	void Deck::add_rand()

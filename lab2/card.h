@@ -3,6 +3,7 @@
 
 namespace Lib {
     class Card {
+        friend class Deck;
         private:
             int suit;
             int rank;
