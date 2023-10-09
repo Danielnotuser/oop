@@ -20,15 +20,23 @@ int main()
     std::cout << "Lower: " << (c1 < c2) << std::endl;
     std::cout << "Greater: " << (c1 > c2) << std::endl;
 */
-	Deck d(5);
+	Deck d;
+	std::cin >> d;
 	std::cout << d;
     d.add_rand();
     std::cout << "add rand: " << d;
     d.shuffle();
     std::cout << "shuffled: " << d;
-    std::cout << "unique? " << d.unique();
-    Card c(1, 2);
+    std::cout << "unique? " << d.unique() << std::endl;
+    Card c(11, 3);
     d.add(c);
     std::cout << "add " << c << ": " << d;
+    std::cout << "sub deck of hearts: " << d.sub_deck(1);
+    std::cout << "delete 3 index: " << d.del(3);
+    Deck d1(d);
+    std::cout << "deck with copy constr: " << d1;
+    Deck d2(std::move(d));
+    std::cout << "deck with move constr: " << d2;
+    std::cout << "our deck: " << d;
     return 0;
 }

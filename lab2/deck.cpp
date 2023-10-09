@@ -27,18 +27,26 @@ namespace Lib {
 		else
 		{
 			deck = new Card[size];
-        	std::copy(fd.arr, fd.arr + size, deck);
-        	std::shuffle(deck, deck + size, std::random_device());
+			for (int i = 0; i < size; i++)
+			{
+				deck[i] = fd.arr[rand() % 52];
+			}
 		}
     }
 
-	Deck::Deck(const Deck &ob) : size(ob.size), deck(nullptr)
+	Deck::Deck(const Deck &ob) : deck(nullptr), size(ob.size)
 	{
 		if (size)
 		{
 			deck = new Card[size];
 			std::copy(ob.deck, ob.deck + size, deck);
 		}
+	}
+
+	Deck::Deck(Deck &&ob) noexcept : deck(ob.deck), size(ob.size) 
+	{
+		ob.size = 0;
+		ob.deck = nullptr;
 	}
 
 	Deck & Deck::operator=(const Deck &ob) 
@@ -54,6 +62,16 @@ namespace Lib {
 				std::copy(ob.deck, ob.deck + size, deck);
 			}
 		}
+		return *this;
+	}
+
+	Deck & Deck::operator=(Deck &&ob) noexcept
+	{
+		if (size) delete [] deck;
+		size = ob.size;
+		deck = ob.deck;
+		ob.size = 0;
+		ob.deck = nullptr;
 		return *this;
 	}
 
@@ -78,15 +96,19 @@ namespace Lib {
 	std::istream &operator>>(std::istream &c, Deck &d)
 	{
 		int sz;
+		std::cout << "Enter size: ";
 		c >> sz;
 		if (c.good())
-			d = Deck(sz);
+		{
+			Deck tmp = Deck(sz);
+			d = std::move(tmp);
+		}
 		return c;
 	}
 
 	Deck Deck::operator+(const Deck &other) const
 	{
-		Deck d(0);
+		Deck d;
 		d.size = size + other.size;
 		d.deck = new Card[d.size];
 		std::copy(deck, deck + size, d.deck);
@@ -102,15 +124,17 @@ namespace Lib {
 		delete [] deck;
 		tmp[size] = c;
 		deck = tmp;
+		size++;
 	}
 
-	void Deck::add(Card c)
+	void Deck::add(const Card &c)
 	{
 		Card *tmp = new Card[size + 1];
 		std::copy(deck, deck + size, tmp);
 		delete [] deck;
 		tmp[size] = c;
 		deck = tmp;
+		size++;
 	}
 
 	void Deck::shuffle()
@@ -120,8 +144,8 @@ namespace Lib {
 
 	bool Deck::unique() const
 	{
-		for (int i = 0; i < size; i++)
-			for (int j = i + 1; j < size - 1; j++)
+		for (int i = 0; i < size - 1; i++)
+			for (int j = i + 1; j < size; j++)
 				if (deck[i] == deck[j])
 					return false;
 		return true;
@@ -129,7 +153,7 @@ namespace Lib {
 
 	Deck Deck::sub_deck(int s) const
 	{
-		Deck sub(0);
+		Deck sub;
 		int cnt = 0;
 		for (int i = 0; i < size; i++)
 			if (deck[i].getS() == s) {
@@ -140,7 +164,7 @@ namespace Lib {
 		return sub;
 	}
 
-	void Deck::del(int ind)
+	Deck &Deck::del(int ind)
 	{
 		if (ind < 0 || ind >= size)
 			throw std::invalid_argument("invalid index");
@@ -151,6 +175,7 @@ namespace Lib {
 		delete [] deck;
 		deck = tmp;
 		size -= 1;
+		return *this;
 	}
 
 	bool Deck::cmp(const Card &c1, const Card &c2)

@@ -21,6 +21,7 @@ namespace Lib {
             int getR() const {return rank;}
             int getS() const {return suit;}
             // overload
+            Card & operator=(const Card&ob) {rank = ob.rank; suit = ob.suit; return *this;}
             friend std::ostream &operator<<(std::ostream&, const Card&);
             friend std::istream &operator>>(std::istream&, Card&);
             std::partial_ordering operator<=>(const Card&) const;
