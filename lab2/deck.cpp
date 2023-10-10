@@ -53,11 +53,11 @@ namespace Lib {
 	{
 		if (this != &ob)
 		{
-			delete [] deck;
-			deck = nullptr;
-			size = ob.size;
 			if (size)
 			{
+				delete [] deck;
+				deck = nullptr;
+				size = ob.size;
 				deck = new Card[size];
 				std::copy(ob.deck, ob.deck + size, deck);
 			}
@@ -76,7 +76,7 @@ namespace Lib {
 	}
 
 
-	Card Deck::operator[](int ind) const
+	const Card &Deck::operator[](int ind) const
 	{
 		if (ind < 0 || ind >= size) 
 			throw std::invalid_argument("invalid index");
@@ -125,21 +125,23 @@ namespace Lib {
 		return d;
 	}
 
-	Deck &Deck::operator >>=(Deck &a, Deck &b)
+	Deck &Deck::operator >>=(Deck &b)
 	{
-		Card c(a[a.size - 1].getR(), a[a.size - 1].getS());
-		Card *tmp1 = new Card[a.size - 1];
-		std::copy(a.deck, a.deck + size, tmp1.deck);
-		delete [] a.deck;
-		a.size -= 1;
-		a.deck = tmp1;
+		if (!size)
+			throw "No cards for shift";
+		Card c(deck[size - 1].getR(), deck[size - 1].getS());
+		Card *tmp1 = new Card[size - 1];
+		std::copy(deck, deck + size - 1, tmp1);
+		delete [] deck;
+		size -= 1;
+		deck = tmp1;
 		Card *tmp2 = new Card[b.size + 1];
-		std::copy(b.deck, b.deck + size, tmp2.deck);
+		std::copy(b.deck, b.deck + b.size, tmp2);
 		tmp2[b.size] = c;
 		delete [] b.deck;
 		b.size += 1;
 		b.deck = tmp2;
-		return a;
+		return *this;
 	}
 
 	void Deck::add_rand()

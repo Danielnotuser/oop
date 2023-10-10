@@ -31,11 +31,11 @@ namespace Lib {
             // overload
             Deck & operator=(const Deck&);
             Deck & operator=(Deck&&) noexcept;
-            Card operator[](int ind) const;
+            const Card &operator[](int ind) const;
             Card &operator[](int ind);
             friend std::ostream &operator<<(std::ostream&, const Deck&);
             friend std::istream &operator>>(std::istream&, Deck&);
-            Deck &operator >>=(Deck &a, Deck &b);
+            Deck &operator >>=(Deck &b);
             Deck operator+(const Deck&) const;
             // other methods
             void add_rand();

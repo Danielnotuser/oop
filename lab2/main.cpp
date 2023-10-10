@@ -37,6 +37,13 @@ int main()
     std::cout << "deck with copy constr: " << d1;
     Deck d2(std::move(d));
     std::cout << "deck with move constr: " << d2;
-    std::cout << "our deck: " << d;
+    std::cout << "our deck: " << d2;
+    Deck d3(13);
+    std::cout << "deck 3 = " << d3;
+    d2 >>= d3;
+    std::cout << "our deck after >>: " << d2;
+    std::cout << "deck 3 = " << d3;
+    
+    
     return 0;
 }
