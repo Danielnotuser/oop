@@ -43,6 +43,8 @@ int main()
     d2 >>= d3;
     std::cout << "our deck after >>: " << d2;
     std::cout << "deck 3 = " << d3;
+    d2.sort();
+    std::cout << "sorted our deck: " << d2;
     
     
     return 0;

@@ -27,10 +27,13 @@ namespace Lib {
 		else
 		{
 			deck = new Card[size];
-			for (int i = 0; i < size; i++)
-			{
-				deck[i] = fd.arr[rand() % 52];
-			}
+			int *ind = new int[52];
+			for (int i = 0; i < 52; i++) 
+				ind[i] = i;
+			std::shuffle(ind, ind + 52, std::random_device());
+			for (int i = 0; i < size; i++) 
+				deck[i] = fd.arr[ind[i]];
+			delete [] ind;
 		}
     }
 
@@ -208,7 +211,7 @@ namespace Lib {
 
 	bool Deck::cmp(const Card &c1, const Card &c2)
 	{
-		return ((c1.getS() < c2.getS()) || (c1.getS() == c2.getS() && c1.getR() < c2.getR()));
+		return ((c1.getS() == c2.getS() && c1.getR() <= c2.getR()) || (c1.getS() < c2.getS()));
 	}
 
 	void Deck::sort()

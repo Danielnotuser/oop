@@ -1,8 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include <iostream>
-#include <algorithm>
-#include <random>
 #include <sstream>
 #include "card.h"
 #include "deck.h"
@@ -11,16 +9,16 @@ TEST_CASE("Card Constructors")
 {
     SECTION("Initializing Constructors") 
     {
-        int r = GENERATE(1, random() % 13 + 2);
-        int s = GENERATE(1, random() % 4 + 1);
+        int r = GENERATE(take(1, random(2, 14)));
+        int s = GENERATE(take(1, random(1, 4)));
         Lib::Card c(r, s);
         REQUIRE(c.getS() == s);
         REQUIRE(c.getR() == r);
     }
     SECTION("Test Exceptions")
     {
-    	int r = GENERATE(1, random() % 13 + 2);
-        int s = GENERATE(1, random() % 4 + 1); 
+    	int r = GENERATE(take(1, random(2, 14)));
+    	int s = GENERATE(take(1, random(1, 4))); 
         REQUIRE_NOTHROW(Lib::Card(r, s));
         REQUIRE_THROWS(Lib::Card(1, 3));
         REQUIRE_THROWS(Lib::Card(2, 0));
@@ -66,7 +64,7 @@ TEST_CASE("Card Overloads")
     {
         std::stringstream out;
         Lib::Card c(2,2);
-        out >> c;
+        out << c;
         REQUIRE(out.str() == "2♦");
     }
 }
@@ -75,19 +73,19 @@ TEST_CASE("Deck Constructors")
 {
 	SECTION("Initializing Constructors")
 	{
-		int s = GENERATE(take(1, random() % 53));
+		int s = GENERATE(take(1, random(0, 52)));
 		Lib::Deck d(s);
 		REQUIRE(d.getS() == s);
 	}
 	SECTION("Copy Constructors")
 	{
-		int s1 = GENERATE(take(1, random() % 53));
+		int s1 = GENERATE(take(1, random(0, 52)));
 		Lib::Deck d1(s1), d2(d1);
 		REQUIRE(d1.getS() == d2.getS());
 	}
 	SECTION("Move Constructors")
 	{
-		int s1 = GENERATE(take(1, random() % 53));
+		int s1 = GENERATE(take(1, random(0, 52)));
 		Lib::Deck d1(s1), d2(std::move(d1));
 		REQUIRE(d1.getS() == 0);
 		REQUIRE(d2.getS() == s1);
@@ -102,14 +100,14 @@ TEST_CASE("Deck Overload")
 {
 	SECTION("Copy assignment")
 	{
-		int s1 = GENERATE(take(1, random() % 53)), s2 = GENERATE(take(1, random() % 53));
+		int s1 = GENERATE(take(1, random(0, 52))), s2 = GENERATE(take(1, random(0, 52)));
 		Lib::Deck d1(s1), d2(s2);
 		d1 = d2;
 		REQUIRE(d1.getS() == d2.getS());
 	}
 	SECTION("Move assignment")
 	{
-		int s1 = GENERATE(take(1, random() % 53)), s2 = GENERATE(take(1, random() % 53));
+		int s1 = GENERATE(take(1, random(0, 52))), s2 = GENERATE(take(1, random(0, 52)));
 		Lib::Deck d1(s1), d2(s2);
 		d2 = std::move(d1);
 		REQUIRE(d1.getS() == 0);
@@ -117,7 +115,7 @@ TEST_CASE("Deck Overload")
 	}
 	SECTION("Shift")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1)), s2 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52))), s2 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1), d2(s2);
 		Lib::Card c(d1[s1 - 1].getR(), d1[s1 - 1].getS());
 		d1 >>= d2;
@@ -127,7 +125,7 @@ TEST_CASE("Deck Overload")
 	}
 	SECTION("Addition")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1)), GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52))), s2 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1), d2(s2);
 		Lib::Deck d3 = d1 + d2;
 		REQUIRE(d3.getS() == s1 + s2);
@@ -140,7 +138,7 @@ TEST_CASE("Deck Methods")
 {
 	SECTION("Add random")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1);
 		Lib::Card c(d1[s1 - 1].getR(), d1[s1 - 1].getS());
 		d1.add_rand();
@@ -149,7 +147,7 @@ TEST_CASE("Deck Methods")
 	}
 	SECTION("Add")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1);
 		Lib::Card c;
 		d1.add(c);
@@ -158,25 +156,23 @@ TEST_CASE("Deck Methods")
 	}
 	SECTION("Unique")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1);
-		if (!d1.unique())
-		{
-			Lib::Card c(d1[0].getR(), d1[0].getS());
-			d1.add(c);
-		}
 		REQUIRE(d1.unique());
+		Lib::Card c(d1[0].getR(), d1[0].getS());
+		d1.add(c);
+		REQUIRE(!(d1.unique()));
 	}
 	SECTION("Sub Deck")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1);
 		Lib::Deck d2(std::move(d1.sub_deck(1)));
 		REQUIRE(d2[0].getS() == 1);
 	}
 	SECTION("Del")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1);
 		Lib::Card c(d1[0].getR(), d1[0].getS());
 		d1.del(0);
@@ -185,9 +181,17 @@ TEST_CASE("Deck Methods")
 	}
 	SECTION("Sort")
 	{
-		int s1 = GENERATE(take(1, random() % 53 + 1));
+		int s1 = GENERATE(take(1, random(1, 52)));
 		Lib::Deck d1(s1);
+		d1.sort();
 		for (int i = 0; i < s1 - 1; i++)
-			REQUIRE(d1[i] < d1[i + 1]);
+		{
+			if (d1[i].getS() == d1[i + 1].getS() && d1[i].getR() == d1[i + 1].getR())
+				continue;
+			if (d1[i].getS() == d1[i + 1].getS())
+				REQUIRE(d1[i] < d1[i + 1]);
+			else
+				REQUIRE(d1[i].getS() < d1[i + 1].getS());
+		}
 	}
 }
