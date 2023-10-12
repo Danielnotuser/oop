@@ -110,7 +110,7 @@ namespace Lib {
 				Deck tmp = Deck(sz);
 				d = std::move(tmp);
 			}
-			catch (...) {}
+			catch (...) {c.setstate(std::ios::badbit); return c;}
 		}
 		return c;
 	}
