@@ -4,7 +4,6 @@
 #include "deck.h"
 
 namespace Lib {
-
 	void FullDeck::full_deck()
 	{
 		int k = 0;
@@ -184,6 +183,8 @@ namespace Lib {
 
 	Deck Deck::sub_deck(int s) const
 	{
+		if (s < 1 || s > 4)
+			throw std::invalid_argument("invalid suit");
 		Deck sub;
 		int cnt = 0;
 		for (int i = 0; i < size; i++)
