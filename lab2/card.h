@@ -15,6 +15,7 @@ namespace Lib {
              * @brief Construct a new Card object - random card
              */
             Card() {randcard();};
+
             /**
              * @brief Construct a new Card object - exact card 
              * @param r rank of card
@@ -24,6 +25,7 @@ namespace Lib {
              */
             Card(int r, int s) {rank = r; suit = s; correct();};
             // setters
+
             /**
              * @brief sets rank and suit of card
              * 
@@ -50,6 +52,7 @@ namespace Lib {
             Card & operator=(const Card&ob) {rank = ob.rank; suit = ob.suit; return *this;}
             friend std::ostream &operator<<(std::ostream&, const Card&);
             friend std::istream &operator>>(std::istream&, Card&);
+            
             /**
              * @brief universal comparation of cards
              * @return std::partial_ordering::unordered if cards have different suits

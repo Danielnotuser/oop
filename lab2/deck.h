@@ -32,10 +32,12 @@ namespace Lib {
              * @throw std::invalid_argument if size is out of range (0..52)
              */
             Deck(int n = 0); 
+
             /**
              * @brief Construct a new Deck object with copying another
              */
             Deck(const Deck&);
+
             /**
              * @brief Construct a new Deck object with moving from another
              */
@@ -47,6 +49,7 @@ namespace Lib {
             // overload
             Deck & operator=(const Deck&);
             Deck & operator=(Deck&&) noexcept;
+
             /**
              * @brief Card from deck array by index
              * 
@@ -55,6 +58,7 @@ namespace Lib {
              * @return const Card& immutable card that can not be changed
              */
             const Card &operator[](int ind) const;
+
             /**
              * @brief Card from deck array by index
              * 
@@ -65,6 +69,7 @@ namespace Lib {
             Card &operator[](int ind);
             friend std::ostream &operator<<(std::ostream&, const Deck&);
             friend std::istream &operator>>(std::istream&, Deck&);
+            
             /**
              * @brief Overload >>= moves the top card of our deck into deck b
              * 
@@ -73,6 +78,7 @@ namespace Lib {
              * @return Deck& our deck
              */
             Deck &operator >>=(Deck &b);
+            
             /**
              * @brief Sum of two decks
              * 
@@ -84,21 +90,25 @@ namespace Lib {
              * @brief adds a random card to our deck
              */
             void add_rand();
+            
             /**
              * @brief adds the exact card to our deck
              * @param constCard& new card to our deck
              */
             void add(const Card&);
+            
             /**
              * @brief shuffles randomly our deck
              * 
              */
             void shuffle();
+            
             /**
              * @brief checks if there are equal cards
              * @return true if there are equal cards
              */
             bool unique() const;
+            
             /**
              * @brief generate subdeck that contains cards with exact suit
              * @param s suit (1..4)
@@ -106,6 +116,7 @@ namespace Lib {
              * @return Deck new subdeck 
              */
             Deck sub_deck(int s) const;
+            
             /**
              * @brief delete card in deck by index
              * @param ind index in deck array
@@ -113,6 +124,7 @@ namespace Lib {
              * @return Deck& our deck
              */
             Deck &del(int ind);
+            
             /**
              * @brief sorts deck array
              * if suits are equal they are compared by rank

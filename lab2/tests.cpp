@@ -67,6 +67,13 @@ TEST_CASE("Card Overloads")
         out << c;
         REQUIRE(out.str() == "2♦");
     }
+
+	SECTION("Input")
+	{
+		std::stringstream inp;
+		Lib::Card c;
+		out >> c;
+	}
 }
 
 TEST_CASE("Deck Constructors")
@@ -105,6 +112,7 @@ TEST_CASE("Deck Overload")
 		d1 = d2;
 		REQUIRE(d1.getS() == d2.getS());
 	}
+
 	SECTION("Move assignment")
 	{
 		int s1 = GENERATE(take(1, random(0, 52))), s2 = GENERATE(take(1, random(0, 52)));
@@ -113,6 +121,20 @@ TEST_CASE("Deck Overload")
 		REQUIRE(d1.getS() == 0);
 		REQUIRE(d2.getS() == s1);
 	}
+
+	SECTION("Output")
+	{
+		Lib::Deck d1;
+		Lib::Card c1, c2;
+		d1.add(c1);
+		d1.add(c2);
+		std::stringstream out1, out2;
+        out1 << d1;
+		std::cout << out1.str();
+		out2 << c1 << c2;
+		std::cout << out2.str();
+	}
+
 	SECTION("Shift")
 	{
 		int s1 = GENERATE(take(1, random(1, 52))), s2 = GENERATE(take(1, random(1, 52)));
@@ -123,6 +145,7 @@ TEST_CASE("Deck Overload")
 		REQUIRE(d1.getS() == s1 - 1);
 		REQUIRE(d2[s2] == c);
 	}
+
 	SECTION("Addition")
 	{
 		int s1 = GENERATE(take(1, random(1, 52))), s2 = GENERATE(take(1, random(1, 52)));
