@@ -72,7 +72,7 @@ TEST_CASE("Card Overloads")
 	{
 		std::stringstream inp;
 		Lib::Card c;
-		out >> c;
+		REQUIRE_NOTHROW(inp >> c);
 	}
 }
 
@@ -130,9 +130,15 @@ TEST_CASE("Deck Overload")
 		d1.add(c2);
 		std::stringstream out1, out2;
         out1 << d1;
-		std::cout << out1.str();
-		out2 << c1 << c2;
-		std::cout << out2.str();
+		out2 << c1 << " " << c2;
+		REQUIRE(out1.str() == out2.str());
+	}
+
+	SECTION("Input")
+	{
+		std::stringstream inp;
+		Lib::Deck d;
+		REQUIRE_NOTHROW(inp >> d);
 	}
 
 	SECTION("Shift")

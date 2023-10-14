@@ -96,9 +96,9 @@ namespace Lib {
     	int n = d.getS();
     	for (int i = 0; i < n; i++)
     	{
-    		c << d[i] << " ";
+    		c << d[i];
+    		if (i != n - 1) c << " ";
     	}
-    	c << std::endl;
     	return c;
     }
 
