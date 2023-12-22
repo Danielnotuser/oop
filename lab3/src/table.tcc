@@ -2,8 +2,9 @@
 #include <string>
 #include <vector>
 
-#include "stud.h"
-#include "templ.h"
+#include "../lib/stud.h"
+#include "../lib/group.h"
+#include "../lib/table.h"
 
 namespace University 
 {

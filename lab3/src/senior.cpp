@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "stud.h"
+#include "../lib/stud.h"
 
 namespace University
 {

@@ -4,17 +4,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "templ.h"
+#include "table.h"
 
 namespace University 
 {
-    class App {
-        private:
-            Table<Group*> groups;
-        public:
-            App(std::vector<Group*> gr) : groups(gr) {};
-    };
-
     class Student {
         private:
             std::string surname, inits;
@@ -26,9 +19,12 @@ namespace University
             Student(std::string surname, std::string initials) : surname(surname), inits(initials) {check_name();};
             Student(std::string surname, std::string initials, std::vector <int> grades, int num) : 
                     surname(surname), inits(initials), grades_num(num), grades(grades) {check_name();};
+            Student(Student&& st) : surname(st.get_surname()), inits(st.get_initials()), 
+                                    grades_num(st.get_grades_num()), grades(st.get_grades()) {};
             // setters & getters
             std::string get_surname() const {return surname;};
             std::string get_initials() const {return inits;};
+            int get_grades_num() const {return grades_num;};
             std::vector <int> get_grades() const {return grades;};
             Student &set_surname(std::string sur);
             Student &set_initials(std::string ins);
@@ -54,6 +50,8 @@ namespace University
             Senior(std::string surname, std::string ins, std::string topic) : Student(surname, ins) {arw.topic = topic;};
             Senior(std::string surname, std::string ins, std::string topic, std::string place, int grade) : 
                     Student(surname, ins), arw(topic, place, grade) {};
+            Senior(Student &stud) : Student(std::move(stud)) {};
+            Senior(Student &stud, std::string topic) : Student(std::move(stud)) {arw.topic = topic;};
             // setters & getters
             std::string get_topic() const {return arw.topic;};
             std::string get_place() const {return arw.place;};
@@ -65,29 +63,6 @@ namespace University
             // other
             void change_sem() override;
     };
-
-    class Group {
-        private:
-            Table <Student*> studs;
-            std::string index;
-            int grades_num;
-            int sem;
-            int stud_type;
-        public:
-            // constructors
-            Group(std::string index, std::vector<Student*>students, int grades_num, int sem, int stud_type) :
-                studs(students), index(index), grades_num(grades_num), sem(sem), stud_type(stud_type) {};
-            Group(std::string index, Table <Student*> studs, int grades_num, int sem, int stud_type) :
-                studs(std::move(studs)), index(index), grades_num(grades_num), sem(sem), stud_type(stud_type) {};
-            // setters & getters
-            std::string get_index() const {return index;};
-            int get_grnum() const {return grades_num;};
-            Group &set_type(int stud) {stud_type = stud; return *this;};
-            Group &set_sem(int s) {sem = s; return *this;};
-            Group &set_grnum(int num) {grades_num = num; return *this;};
-            Group &set_studs(Table <Student*> students) {studs = std::move(students); return *this;};
-    };
 }
-
 
 #endif
