@@ -58,10 +58,10 @@ namespace University
             std::string get_topic() const {return arw.topic;};
             std::string get_place() const {return arw.place;};
             int get_arw_grade() const {return arw.grade;};
-            Senior &set_arw(std::string topic, std::string place, int grade) {arw.topic = topic; arw.place = place; arw.grade = grade; return *this;};
-            Senior &set_topic(std::string topic) {arw.topic = topic; return *this;};
-            Senior &set_place(std::string place) {arw.place = place; return *this;};
-            Senior &set_arw_grade(int grade) {arw.grade = grade; return *this;};
+            Senior &set_arw(std::string topic, std::string place, int grade);
+            Senior &set_topic(std::string topic);
+            Senior &set_place(std::string place);
+            Senior &set_arw_grade(int grade);
             // other
             void change_sem() override;
             // destructor

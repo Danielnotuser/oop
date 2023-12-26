@@ -9,10 +9,10 @@ namespace University
     void Student::check_name()
     {
         // checking surname
-        for (int i = 0; i < surname.length(); i++)
+        for (size_t i = 0; i < surname.length(); i++)
         {
-            if (!i && !std::isupper(surname[i]) ||
-                i && !std::islower(surname[i]))
+            if (((i == 0) && !std::isupper(surname[i])) ||
+                (i && !std::islower(surname[i])))
                 throw std::invalid_argument("invalid surname");
         }
         // checking initials

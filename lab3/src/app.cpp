@@ -1,10 +1,10 @@
 #include <vector>
 #include <string>
 
-#include "app.h"
-#include "table.h"
-#include "group.h"
-#include "student.h"
+#include "../lib/app.h"
+#include "../lib/table.h"
+#include "../lib/group.h"
+#include "../lib/stud.h"
 
 namespace University 
 {
