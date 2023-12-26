@@ -31,6 +31,8 @@ namespace University
             Student &set_grades(std::vector <int> grades_vect, int num);                                                    
             // other
             virtual void change_sem();
+            // destructor
+            virtual ~Student() = default;
     };
 
     // ARW - Academic and research work
@@ -62,6 +64,8 @@ namespace University
             Senior &set_arw_grade(int grade) {arw.grade = grade; return *this;};
             // other
             void change_sem() override;
+            // destructor
+            ~Senior() override = default;
     };
 }
 

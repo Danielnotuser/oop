@@ -12,9 +12,14 @@ namespace University
 {
     class App {
         private:
-            Table<Group*> groups;
+            Table<Group, std::string> groups;
         public:
-            App(std::vector<Group*> gr) : groups(gr) {};
+            // constructors
+            App(std::vector<Group> gr);
+            // setters & getters
+            int get_group_num() {return groups.get_num();};
+            // other
+            void add_group(Group gr) {groups.add(gr);};
     };
 }
 
