@@ -40,6 +40,14 @@ namespace University
         grades_num = num; 
         return *this;
     }
+
+    double Student::get_avr()
+    {
+    	double sum;
+    	for (int i = 0; i < grades_num; i++)
+    		sum += grades[i];
+    	return (double) sum / grades_num;
+    }
 }
 
 

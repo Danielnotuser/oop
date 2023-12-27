@@ -20,6 +20,10 @@ namespace University
             int get_group_num() {return groups.get_num();};
             // other
             void add_group(Group gr) {groups.add(gr);};
+            void enroll_stud(Student&, std::string);
+            void change_sem(Student*, int);
+            double gpa(Group);
+            
             // destructors
             ~App() = default;
     };

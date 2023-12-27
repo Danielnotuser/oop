@@ -30,7 +30,7 @@ namespace University
             Student &set_initials(std::string ins);
             Student &set_grades(std::vector <int> grades_vect, int num);                                                    
             // other
-            virtual void change_sem();
+            double get_avr();
             // destructor
             virtual ~Student() = default;
     };
@@ -62,8 +62,6 @@ namespace University
             Senior &set_topic(std::string topic);
             Senior &set_place(std::string place);
             Senior &set_arw_grade(int grade);
-            // other
-            void change_sem() override;
             // destructor
             ~Senior() override = default;
     };

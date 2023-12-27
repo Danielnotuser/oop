@@ -15,6 +15,22 @@ namespace University
 
     App::App(std::vector<Group> gr)
     {
-        Table<Group> t(gr, group_index);
+        groups = Table<Group>(gr, group_index);
+    }
+
+    void App::enroll_stud(Student *stud, std::string group_index)
+    {
+    	Group a = groups.find(group_index);
+    	a.add_stud(stud);
+    }
+
+    double App::gpa(Group gr)
+    {
+    	double avr_sum = 0;
+    	for (auto it = gr.studs.begin(); it < gr.studs.end(); it++)
+    	{
+    		avr_sum += (*it)->get_avr();
+    	}
+    	return (double) avr_sum / gr.studs.get_num();
     }
 }
