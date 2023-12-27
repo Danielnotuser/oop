@@ -12,7 +12,7 @@ namespace University
 {
     class App {
         private:
-            Table<Group, std::string> groups;
+            Table<Group> groups;
         public:
             // constructors
             App(std::vector<Group> gr);
@@ -20,6 +20,8 @@ namespace University
             int get_group_num() {return groups.get_num();};
             // other
             void add_group(Group gr) {groups.add(gr);};
+            // destructors
+            ~App() = default;
     };
 }
 

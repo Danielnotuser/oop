@@ -1,9 +1,6 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include <iostream>
-#include <string>
-#include <vector>
 #include <memory>
 #include "stud.h"
 #include "table.h"
@@ -30,7 +27,7 @@ namespace University
             Group &set_grnum(int num) {grades_num = num; return *this;};
             Group &set_studs(Table <std::shared_ptr<Student>, std::string> students) {studs = std::move(students); return *this;};
             // other
-            void add_stud(Student* st) {studs.add(st);};
+            void add_stud(std::shared_ptr<Student> st) {studs.add(st);};
     };
 }
 

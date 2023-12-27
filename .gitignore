@@ -3,3 +3,4 @@ output/
 *.exe
 build/
 doxygen/
+cmake-build-debug/

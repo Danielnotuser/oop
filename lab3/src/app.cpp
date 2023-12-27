@@ -8,13 +8,13 @@
 
 namespace University 
 {
-    std::string group_index(Group &gr)
+    std::string group_index(Group gr)
     {
         return gr.get_index();
     }
 
     App::App(std::vector<Group> gr)
     {
-        groups = Table<Group, std::string>(gr, group_index);
+        Table<Group> t(gr, group_index);
     }
 }

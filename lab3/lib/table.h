@@ -2,7 +2,6 @@
 #define TEMPL_H
 
 #include <vector>
-#include "../src/table.tcc"
 
 namespace University
 {
@@ -10,42 +9,50 @@ namespace University
     template <class T>
     struct Elem {
         T value;
+        struct Elem<T> *prev;
         struct Elem<T> *next;
     };
     template <class T>
     struct List {
-        struct Elem<T> *head;
+        struct Elem<T> *before_begin;
+        struct Elem<T> *after_end;
     };
     // template for Students and Groups
-    template <class T, class K>
+    template <class T>
     class Table {
         private:
             List<T> *hash_map;
             int cap;
-            int elem_num;
-            int hash(K);
-            K key(T);
-            int cmp(T);
+            int elem_num = 0;
+            void link(Elem<T>*,Elem<T>*);
+            List<T>* create_map();
+            int hash(std::string);
+            static std::string key(T);
+            int cmp(const T&, const T&);
+            void insert(Elem<T>*,Elem<T>*);
         public:
             // constructors
-            Table(std::vector<T>, K (*) (T), int);
-            Table(Table&&);
+            explicit Table<T>(int cap = 30) : cap(cap) {hash_map = create_map();};
+            Table<T>(std::vector<T>, std::string (*) (T), int = 30);
+            Table<T>(const Table&);
+            Table<T>(Table&&) noexcept;
             // setters & getters
             int get_cap() const {return cap;};
             int get_num() const {return elem_num;};
             List<T> *get_map() const {return hash_map;};
-            Table<T,K> &set_elem_num(int num) {elem_num = num; return *this;};
+            Table<T> &set_elem_num(int num) {elem_num = num; return *this;};
             // overload
-            Table<T,K> &operator=(Table<T,K>&&) noexcept;
+            Table<T> &operator=(const Table<T>&);
+            Table<T> &operator=(Table<T>&&) noexcept;
             // other
             void add(T);
             void print();
             // destructor
-            ~Table() {delete [] hash_map;};
+            ~Table<T>() {delete [] hash_map;};
 
     };
 }
 
-
+#include "table.tcc"
 
 #endif

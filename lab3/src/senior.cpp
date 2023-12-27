@@ -1,7 +1,3 @@
-#include <iostream>
-#include <string>
-#include <vector>
-
 #include "../lib/stud.h"
 
 namespace University

@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -g")
 add_library(stud lib/stud.h src/stud.cpp src/senior.cpp)
 add_library(group lib/group.h src/group.cpp)
 add_library(app lib/app.h src/app.cpp)
-add_library(table INTERFACE lib/table.h src/table.tcc)
+add_library(table INTERFACE lib/table.h lib/table.tcc)
 link_libraries(stud group app table)
 
 add_executable(main src/main.cpp)
