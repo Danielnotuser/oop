@@ -27,9 +27,11 @@ namespace University
     }
 
     template <class T>
-    Table<T>::Table(std::vector<T> vect, std::string (*key_func) (T))
+    Table<T>::Table(std::vector<T> vect, std::string (*key_func) (T), int new_cap)
     {
-        cap = 30;
+        if (new_cap <= 0)
+            throw std::invalid_argument("invalid capacity");
+        cap = new_cap;
         key = key_func;
         elem_num = vect.size();
         hash_map = create_map();
@@ -135,8 +137,8 @@ namespace University
     {
         for (int i = 0; i < Table<T>::cap; i++)
         {
-            Elem<T> *hd = hash_map[i].head;
-            while (hd)
+            Elem<T> *hd = hash_map[i].before_begin->next;
+            while (hd != hash_map[i].after_end)
             {
                 std::cout << key(hd->val) << " ";
                 hd = hd->next;
@@ -149,13 +151,13 @@ namespace University
     T &Table<T>::find(std::string k)
     {
     	int h = hash(k);
-    	Elem<T> *el = hash_map[h].before_end->next;
+    	Elem<T> *el = hash_map[h].before_begin->next;
     	while (el != hash_map[h].after_end)
     	{
     		if (key(el->value) == k) 
     			return el->value;
     	}
-    	throw std::runtime_error("there is no such group");
+    	throw std::runtime_error("there is no element with this key");
     }
 }
 

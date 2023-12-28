@@ -4,21 +4,21 @@ namespace University
 {
     Senior &Senior::set_arw(std::string topic, std::string place, int grade) 
     {
-        arw.topic = std::move(topic);
-        arw.place = std::move(place);
+        arw.topic = topic; 
+        arw.place = place; 
         arw.grade = grade; 
         return *this;
     }
 
     Senior &Senior::set_topic(std::string topic) 
     {
-        arw.topic = std::move(topic);
+        arw.topic = topic; 
         return *this;
     }
 
     Senior &Senior::set_place(std::string place) 
     {
-        arw.place = std::move(place);
+        arw.place = place; 
         return *this;
     }
 

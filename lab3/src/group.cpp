@@ -4,7 +4,7 @@
 
 namespace University
 {
-    std::string stud_name(Student *st)
+    std::string stud_name(std::shared_ptr<Student> st)
     {
         return st->get_surname();
     }
