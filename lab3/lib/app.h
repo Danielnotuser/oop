@@ -12,19 +12,23 @@ namespace University
 {
     class App {
         private:
-            Table<Group> groups;
+            Table<Group, std::string> groups;
         public:
             // constructors
+            App() = default;
             App(std::vector<Group> gr);
             // setters & getters
             int get_group_num() {return groups.get_num();};
             // other
-            void add_group(Group gr) {groups.add(gr);};
-            void print_group(std::string);
-            void enroll_stud(std::shared_ptr<Student>, std::string);
-            void change_sem(std::shared_ptr<Student>, int);
+            void add_group(Group &gr) {groups.add(gr);};
+            void print_group(std::ostream&, std::string&);
+            void enroll_stud(std::shared_ptr<Student>, std::string&);
+            void change_sem(Group&, std::shared_ptr<Student>, int);
             double gpa(Group);
-            std::vector find_losers();
+            Group &find_group(std::string ind) {return groups.find(ind);}
+            void print(std::ostream&);
+            void print_with_grades(std::ostream&);
+            std::vector <std::shared_ptr<Student>> find_losers();
             
             // destructors
             ~App() = default;

@@ -34,10 +34,9 @@ namespace University
         return *this;
     }
 
-    Student &Student::set_grades(std::vector <int> grades_vect, int num) 
+    Student &Student::set_grades(std::vector <int> grades_vect)
     {
-        grades = grades_vect; 
-        grades_num = num; 
+        grades = grades_vect;
         return *this;
     }
 
@@ -48,6 +47,9 @@ namespace University
     		sum += grades[i];
     	return (double) sum / grades_num;
     }
+
+    Senior::Senior(Senior&& s) noexcept : Student(s.surname, s.get_initials(), s.get_grades(), s.get_grades_num()), arw(s.get_arw()) {}
+
 }
 
 
