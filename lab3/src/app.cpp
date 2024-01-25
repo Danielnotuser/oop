@@ -18,13 +18,12 @@ namespace University
         groups = Table<Group, std::string>(gr, group_index);
     }
 
-    void App::enroll_stud(std::shared_ptr<Student> stud, std::string &group_index)
+    void App::enroll_stud(std::shared_ptr<Student> stud, Group &gr)
     {
-    	Group a = groups.find(std::move(group_index));
-    	a.add_stud(stud);
+    	gr.add_stud(stud);
     }
 
-    double App::gpa(Group gr)
+    double App::gpa(Group &gr)
     {
     	double avr_sum = 0;
         Table <std::shared_ptr<Student>, std::string> studs = gr.get_studs();
@@ -72,9 +71,8 @@ namespace University
     	return res;
     }
 
-    void App::print_group(std::ostream &c, std::string &index)
+    void App::print_group(std::ostream &c, Group& gr)
     {
-    	Group gr = groups.find(index);
     	gr.print(c);
     }
 

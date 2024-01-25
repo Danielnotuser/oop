@@ -21,10 +21,10 @@ namespace University
             int get_group_num() {return groups.get_num();};
             // other
             void add_group(Group &gr) {groups.add(gr);};
-            void print_group(std::ostream&, std::string&);
-            void enroll_stud(std::shared_ptr<Student>, std::string&);
+            void print_group(std::ostream&, Group&);
+            void enroll_stud(std::shared_ptr<Student>, Group&);
             void change_sem(Group&, std::shared_ptr<Student>, int);
-            double gpa(Group);
+            double gpa(Group&);
             Group &find_group(std::string ind) {return groups.find(ind);}
             void print(std::ostream&);
             void print_with_grades(std::ostream&);
