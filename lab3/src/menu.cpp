@@ -65,7 +65,7 @@ namespace University
                 fdata.getline(ins.data(), 50, ' ');
                 fdata >> num;
                 if (sem < 4)
-                    st_p = std::make_shared<Student>(name, ins, num);
+                    st_p = std::make_shared<Junior>(name, ins, num);
                 else
                     st_p = std::make_shared<Senior>(name, ins, num);
                 gr.add_stud(st_p);
@@ -89,14 +89,14 @@ namespace University
             {
                 Group gr = a.find_group(ind);
                 do {
-                    safe_cin<int>(num_s, "How many grades of students would you like to enter: ");
+                    safe_cin<int>(num_s, "How many students would you like to enter: ");
                 } while(num_s <= 0);
                 for (int i = 0; i < num_s || std::cin.eof(); i++)
                 {
                     safe_cin<std::string>(name, "Write student surname: ");
                     try
                     {
-                        std::shared_ptr<Student> st = gr.find_stud(name);\
+                        std::shared_ptr<Student> st = gr.find_stud(name);
                         int g_num = st->get_grades_num(), n;
                         std::cout << "Enter grades (" << g_num << "): ";
                         std::vector<int> grades;
@@ -144,7 +144,7 @@ namespace University
             do {
                 safe_cin<int>(gr_num, "Write number of grades: ");
             } while (gr_num <= 0);
-            if (sem < 4) st_p = std::make_shared<Student>(name, ins, gr_num);
+            if (sem < 4) st_p = std::make_shared<Junior>(name, ins, gr_num);
             else st_p = std::make_shared<Senior>(name, ins, gr_num);
             gr.add_stud(st_p);
         }

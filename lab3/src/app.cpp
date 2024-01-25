@@ -30,24 +30,22 @@ namespace University
     	}
     	return (double) avr_sum / studs.get_num();
     }
-   /* void App::change_sem(Group &gr, std::shared_ptr<Student> st, int num)
+   void App::change_sem(Group &gr, std::shared_ptr<Student> st, int num)
     {
         if (num > gr.get_grnum()) gr.set_grnum(num);
         st->refresh_grades(num);
         int s = gr.get_sem();
         if (s == 3)
         {
-            Senior s(*st);
-            st = dynamic_cast<Student*>(&s);
-            std::shared_ptr<Student> sen = dynamic_cast<Senior&>(*st);
-            Senior s(dynamic_cast<Senior&>(*st));
+            std::shared_ptr<Student> sen = std::make_shared<Senior>(*st);
+            st = sen;
         }
         else if (s < 8)
             gr.set_sem(s + 1);
         else
             groups.del(gr.get_index());
         // dynamic cast . . .
-    }*/
+    }
 
     std::vector <std::shared_ptr<Student>> App::find_losers()
     {
