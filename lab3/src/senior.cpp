@@ -27,4 +27,6 @@ namespace University
         arw.grade = grade; 
         return *this;
     }
+
+    Senior::Senior(Senior&& s) noexcept : Student(s.get_surname(), s.get_initials(), s.get_grades(), s.get_grades_num()), arw(s.get_arw()) {}
 }

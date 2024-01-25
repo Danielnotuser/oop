@@ -35,15 +35,15 @@ namespace University
             // constructors
             explicit Table<T,K>(int cap = 30) : cap(cap) {hash_map = create_map();};
             Table(std::vector<T>, K (*) (T&), int = 30);
-            Table<T>(const Table&);
-            Table<T>(Table&&) noexcept;
+            Table(const Table<T,K>&);
+            Table(Table<T,K>&&) noexcept;
             // setters & getters
             int get_cap() const {return cap;};
             int get_num() const {return elem_num;};
             Table<T,K> &set_elem_num(int num) {elem_num = num; return *this;};
             // overload
-            Table<T,K> &operator=(const Table<T,K>&);
-            Table<T,K> &operator=(Table<T,K>&&) noexcept;
+            Table &operator=(const Table<T,K>&);
+            Table &operator=(Table<T,K>&&) noexcept;
             // other
             void add(T);
             void del(K);

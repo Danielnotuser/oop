@@ -48,8 +48,6 @@ namespace University
     	return (double) sum / grades_num;
     }
 
-    Senior::Senior(Senior&& s) noexcept : Student(s.surname, s.get_initials(), s.get_grades(), s.get_grades_num()), arw(s.get_arw()) {}
-
 }
 
 

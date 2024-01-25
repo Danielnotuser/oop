@@ -32,10 +32,9 @@ namespace University
     int menu(const char *opts[], int num_opts)
     {
         int var = 0;
-        int i, err;
         do {
             if (var >= num_opts || var < 0) std::cout << "Error! Number must be in range of options. Try again..." << std::endl;
-            for (i = 0; i < num_opts; i++)
+            for (int i = 0; i < num_opts; i++)
                 std::cout << opts[i] << std::endl;
             safe_cin<int>(var, "Choose option: ");
         } while (var >= num_opts || var < 0);
@@ -79,7 +78,7 @@ namespace University
     void dlg_sheet(App &a)
     {
         std::string ind, name;
-        int num_g, num_s, err;
+        int num_g, num_s;
         do {
             safe_cin<int>(num_g, "How many groups would you like to enter: ");
         } while(num_g <= 0);

@@ -12,7 +12,7 @@ namespace University
         private:
             std::string surname, inits;
             std::vector <int> grades;
-            int grades_num = 0;
+            int grades_num;
             void check_name();
         public:
             // constructors

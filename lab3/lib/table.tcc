@@ -48,7 +48,7 @@ namespace University
     }
 
     template <class T, class K>
-    Table<T,K>::Table (const Table<T,K> &tbl) : cap(tbl.cap), elem_num(tbl.elem_num)
+    Table<T,K>::Table(const Table<T,K> &tbl) : cap(tbl.cap), elem_num(tbl.elem_num)
     {
         if (elem_num)
         {
@@ -58,7 +58,7 @@ namespace University
     }
 
     template <class T, class K>
-    Table<T,K>::Table (Table<T,K> &&tbl) noexcept : hash_map(tbl.hash_map), cap(tbl.cap), elem_num(tbl.elem_num)
+    Table<T,K>::Table(Table<T,K> &&tbl) noexcept : hash_map(tbl.hash_map), cap(tbl.cap), elem_num(tbl.elem_num)
     {
         tbl.hash_map = nullptr;
         tbl.elem_num = 0;

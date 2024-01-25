@@ -1,6 +1,5 @@
 #include "../lib/stud.h"
 #include "../lib/group.h"
-#include "../lib/table.h"
 
 namespace University
 {

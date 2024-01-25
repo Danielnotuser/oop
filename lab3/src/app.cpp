@@ -2,9 +2,6 @@
 #include <string>
 
 #include "../lib/app.h"
-#include "../lib/table.h"
-#include "../lib/group.h"
-#include "../lib/stud.h"
 
 namespace University 
 {
@@ -33,7 +30,7 @@ namespace University
     	}
     	return (double) avr_sum / studs.get_num();
     }
-    void App::change_sem(Group &gr, std::shared_ptr<Student> st, int num)
+   /* void App::change_sem(Group &gr, std::shared_ptr<Student> st, int num)
     {
         if (num > gr.get_grnum()) gr.set_grnum(num);
         st->refresh_grades(num);
@@ -42,7 +39,7 @@ namespace University
         {
             Senior s(*st);
             st = dynamic_cast<Student*>(&s);
-            std::shared_ptr<Student> s = dynamic_cast<Senior&>(*st);
+            std::shared_ptr<Student> sen = dynamic_cast<Senior&>(*st);
             Senior s(dynamic_cast<Senior&>(*st));
         }
         else if (s < 8)
@@ -50,7 +47,7 @@ namespace University
         else
             groups.del(gr.get_index());
         // dynamic cast . . .
-    }
+    }*/
 
     std::vector <std::shared_ptr<Student>> App::find_losers()
     {
