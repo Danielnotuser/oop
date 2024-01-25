@@ -19,6 +19,8 @@ namespace University
         List<T> *h = new List<T>[cap];
         for (int i = 0; i < cap; i++)
         {
+            h[i].before_begin = new Elem<T>;
+            h[i].after_end = new Elem<T>;
             link(h[i].before_begin, h[i].after_end);
             if (i == cap - 1) link(h[i].after_end, h[0].before_begin);
             else link(h[i].after_end, h[i + 1].before_begin);
