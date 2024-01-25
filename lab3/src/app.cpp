@@ -10,6 +10,11 @@ namespace University
         return gr.get_index();
     }
 
+    App::App()
+    {
+    	groups = Table<Group, std::string>(group_index);
+    }
+
     App::App(std::vector<Group> gr)
     {
         groups = Table<Group, std::string>(gr, group_index);

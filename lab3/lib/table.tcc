@@ -16,7 +16,7 @@ namespace University
     template <class T, class K>
     List<T> *Table<T,K>::create_map()
     {
-        auto *h = new List<T>[cap];
+        List<T> *h = new List<T>[cap];
         for (int i = 0; i < cap; i++)
         {
             link(h[i].before_begin, h[i].after_end);
@@ -42,7 +42,7 @@ namespace University
         }
         catch (...)
         {
-            delete [] hash_map;
+            if (hash_map) delete [] hash_map;
             throw;
         }
     }
@@ -120,7 +120,7 @@ namespace University
     void Table<T,K>::add(T val)
     {
         int h = hash(key(val));
-        struct Elem<T> *a;
+        Elem<T> *a;
         a->value = val;
         struct Elem<T> *el = hash_map[h].before_begin->next;
         if (!el)

@@ -17,7 +17,7 @@ namespace University
         }
         // checking initials
         if (inits.length() > 2 ||
-            !std::isupper(inits[0]) || !std::isupper(inits[1]))
+            !std::isupper(inits[0]) || (inits.length() != 1 &&!std::isupper(inits[1])))
             throw std::invalid_argument("invalid initals");
 
     }

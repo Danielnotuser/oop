@@ -61,9 +61,10 @@ namespace University
             for (int i = 0; i < num; i++)
             {
                 std::shared_ptr<Student> st_p;
-                fdata.getline(name.data(), 50, ' ');
-                fdata.getline(ins.data(), 50, ' ');
+                fdata >> name;
+                fdata >> ins;
                 fdata >> num;
+                std::cout << name << ins << num << std::endl;
                 if (sem < 4)
                     st_p = std::make_shared<Junior>(name, ins, num);
                 else

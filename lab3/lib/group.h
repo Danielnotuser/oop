@@ -15,7 +15,7 @@ namespace University
             int sem;
         public:
             // constructors
-            Group(std::string index, int sem) : index(std::move(index)), grades_num(0), sem(sem) {};
+            Group(std::string index, int sem);
             Group(std::string index, std::vector<std::shared_ptr<Student>>students, int sem);
             Group(std::string index, Table <std::shared_ptr<Student>, std::string> studs, int sem);
             // setters & getters

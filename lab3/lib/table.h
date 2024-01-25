@@ -28,12 +28,13 @@ namespace University
             void link(Elem<T>*,Elem<T>*);
             List<T>* create_map();
             int hash(K);
-            static K (*key)(T&);
+            K (*key)(T&);
             int cmp(T&, T&) const;
             void insert(Elem<T>*,Elem<T>*);
         public:
             // constructors
-            explicit Table(int cap = 30) : cap(cap) {hash_map = create_map();};
+            Table() {};
+            Table(K (*key_func) (T&), int cap = 30) : cap(cap), key(key_func) {hash_map = create_map();};
             Table(std::vector<T>, K (*) (T&), int = 30);
             Table(const Table<T,K>&);
             Table(Table<T,K>&&) noexcept;
@@ -80,7 +81,7 @@ namespace University
             TableIter begin() {return TableIter(hash_map[0].before_begin);};
             TableIter end() {return TableIter(hash_map[cap-1].after_end);};
             // destructor
-            ~Table() {delete [] hash_map;};
+            ~Table() {if (hash_map) delete [] hash_map;};
 
     };
 }

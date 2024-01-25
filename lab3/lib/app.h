@@ -15,7 +15,7 @@ namespace University
             Table<Group, std::string> groups;
         public:
             // constructors
-            App() = default;
+            App();
             App(std::vector<Group> gr);
             // setters & getters
             int get_group_num() {return groups.get_num();};
