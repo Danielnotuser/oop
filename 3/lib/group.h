@@ -16,7 +16,7 @@ namespace University
             int sem;
         public:
             // constructors
-            Group() {};
+            Group() {studs = Table<std::shared_ptr<Student>, std::string>(key);};
             Group(std::string index, int sem);
             Group(std::string index, std::vector<std::shared_ptr<Student>>students, int sem);
             Group(std::string index, Table <std::shared_ptr<Student>, std::string> studs, int sem);

@@ -19,6 +19,7 @@ namespace University
     struct List {
         struct Elem<T> *before_begin = nullptr;
         struct Elem<T> *after_end = nullptr;
+        List() {before_begin = new Elem<T>; after_end = new Elem<T>;};
     };
 
     template<class T, class K, bool is_const>
@@ -58,12 +59,12 @@ namespace University
     template <class T, class K>
     class Table {
         private:
-            List<T> *hash_map;
+            List<T> *hash_map = nullptr;
             int cap;
             int elem_num = 0;
             void link(Elem<T>*,Elem<T>*);
             List<T>* create_map();
-            static K (*key) (T&);
+            K (*key) (T&);
             int hash(K);
             int cmp(T&, T&) const;
             void insert(Elem<T>*,Elem<T>*);

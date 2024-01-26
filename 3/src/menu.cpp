@@ -65,7 +65,7 @@ namespace University
                 fdata >> name;
                 fdata >> ins;
                 fdata >> gr_num;
-                std::cout << "i = " << i << name << ins << num << std::endl;
+                std::cout << "i = " << i << name << ins << gr_num << std::endl;
                 if (sem < 4)
                     st_p = std::make_shared<Junior>(name, ins, gr_num);
                 else

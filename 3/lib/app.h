@@ -16,7 +16,7 @@ namespace University
             static std::string key(Group&);
         public:
             // constructors
-            App() = default;
+            App() {groups = Table<Group, std::string>(key);};
             App(std::vector<Group> gr);
             // setters & getters
             int get_group_num() {return groups.get_num();};
