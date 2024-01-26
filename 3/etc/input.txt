@@ -10,7 +10,7 @@ B23-111
 Cinderella C 4
 Ariel A 5
 Rapunzel R 6
-SnowWhite SW 7
+Snowhite SW 7
 B20-333
 7
 4

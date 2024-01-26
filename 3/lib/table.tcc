@@ -19,8 +19,6 @@ namespace University
         List<T> *h = new List<T>[cap];
         for (int i = 0; i < cap; i++)
         {
-            h[i].before_begin = new Elem<T>;
-            h[i].after_end = new Elem<T>;
             link(h[i].before_begin, h[i].after_end);
             if (i == cap - 1) link(h[i].after_end, h[0].before_begin);
             else link(h[i].after_end, h[i + 1].before_begin);
@@ -40,11 +38,11 @@ namespace University
             elem_num = vect.size();
             hash_map = create_map();
             for (int i = 0; i < elem_num; i++)
-                add(vect[i]);
+                add(std::move(vect[i]));
         }
         catch (...)
         {
-            if (hash_map) delete [] hash_map;
+            delete [] hash_map;
             throw;
         }
     }
@@ -52,10 +50,13 @@ namespace University
     template <class T, class K>
     Table<T,K>::Table(const Table<T,K> &tbl) : cap(tbl.cap), elem_num(tbl.elem_num)
     {
-        if (elem_num)
+        if (hash_map)
+            delete [] hash_map;
+        if (tbl.hash_map)
         {
-            hash_map = new List<T>[cap];
-            std::copy(tbl.hash_map, tbl.hash_map + cap, hash_map);
+            key = tbl.key;
+            hash_map = create_map();
+            hash_map = tbl.hash_map;
         }
     }
 
@@ -73,12 +74,13 @@ namespace University
         {
             cap = tbl.cap;
             elem_num = tbl.elem_num;
+            key = tbl.key;
             delete [] hash_map;
-            if (cap)
-                hash_map = new List<T>[cap];
-            if (elem_num)
-                std::copy(tbl.hash_map, tbl.hash_map + cap, hash_map);
-
+            if (cap && elem_num)
+            {
+                for (auto it = tbl.begin<true>(); it != tbl.end<true>(); it++)
+                    if (*it) add(*it);
+            }
         }
         return *this;
     }
@@ -89,6 +91,7 @@ namespace University
         hash_map = tbl.hash_map;
         cap = tbl.cap;
         elem_num = tbl.elem_num;
+        key = tbl.key;
         tbl.hash_map = nullptr;
         tbl.elem_num = 0;
         return *this;
@@ -121,9 +124,10 @@ namespace University
     template <class T, class K>
     void Table<T,K>::add(T val)
     {
+        if (!hash_map) hash_map = create_map();
         int h = hash(key(val));
-        Elem<T> *a;
-        a->value = val;
+        Elem<T> *a = new Elem<T>;
+        a->val = std::move(val);
         struct Elem<T> *el = hash_map[h].before_begin->next;
         if (!el)
         { // Element is placed at the beginning
@@ -132,7 +136,7 @@ namespace University
         }
         while (el != hash_map[h].after_end)
         {
-            if (cmp(a->value, el->value) <= 0)
+            if (cmp(a->val, el->val) <= 0)
             { // Element is placed at the middle
                 insert(a, el);
                 return;
@@ -149,7 +153,7 @@ namespace University
         Elem<T> *el = hash_map[h].before_begin->next;
         while (el != hash_map[h].after_end)
         {
-            if (key(el->value) == name)
+            if (key(el->val) == name)
             {
                 link(el->prev, el->next);
                 return;
@@ -162,15 +166,11 @@ namespace University
     template <class T, class K>
     void Table<T,K>::print(std::ostream &c)
     {
-        for (int i = 0; i < Table<T,K>::cap; i++)
+        for (int i = 0; i < cap; i++)
         {
-            Elem<T> *hd = hash_map[i].before_begin->next;
-            while (hd != hash_map[i].after_end)
-            {
-                c << key(hd->value) << " ";
-                hd = hd->next;
-            }
-            c << std::endl;
+            Elem<T> *a = hash_map[i].before_begin->next;
+            while (a != hash_map[i].after_end)
+                c << key(a->val) << std::endl;
         }
     }
 
@@ -181,8 +181,8 @@ namespace University
     	Elem<T> *el = hash_map[h].before_begin->next;
     	while (el != hash_map[h].after_end)
     	{
-    		if (key(el->value) == name)
-    			return el->value;
+    		if (key(el->val) == name)
+    			return el->val;
             el = el->next;
     	}
     	throw std::invalid_argument("there is no element with this key");

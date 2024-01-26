@@ -51,24 +51,25 @@ namespace University
         if(!fdata)
             throw::std::runtime_error("Failed to open the file.");
         std::string ind, name, ins;
-        int sem, num;
+        int sem, num, gr_num;
         fdata >> ind;
         while (!fdata.eof())
         {
             fdata >> sem;
-            Group gr(ind, num);
+            Group gr(ind, sem);
             fdata >> num;
+            std::cout << "Gr = " << ind << " " << sem << " " << num << std::endl;
             for (int i = 0; i < num; i++)
             {
                 std::shared_ptr<Student> st_p;
                 fdata >> name;
                 fdata >> ins;
-                fdata >> num;
-                std::cout << name << ins << num << std::endl;
+                fdata >> gr_num;
+                std::cout << "i = " << i << name << ins << num << std::endl;
                 if (sem < 4)
-                    st_p = std::make_shared<Junior>(name, ins, num);
+                    st_p = std::make_shared<Junior>(name, ins, gr_num);
                 else
-                    st_p = std::make_shared<Senior>(name, ins, num);
+                    st_p = std::make_shared<Senior>(name, ins, gr_num);
                 gr.add_stud(st_p);
             }
             a.add_group(gr);
