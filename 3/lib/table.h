@@ -89,10 +89,10 @@ namespace University
             T &find(K);
             bool is_empty() {return (elem_num == 0);};
             // iterator
-            template<bool is_const>
-            TableIter<T, K, is_const> begin() {return TableIter<T, K, is_const>(hash_map[0].before_begin->next);};
-            template<bool is_const>
-            TableIter<T, K, is_const> end() {return TableIter<T, K, is_const>(hash_map[cap-1].after_end);};
+            TableIter<T, K, true> begin() const {return TableIter<T, K, true>(hash_map[0].before_begin->next);};
+            TableIter<T, K, false> begin() {return TableIter<T, K, false>(hash_map[0].before_begin->next);};
+            TableIter<T, K, true> end() const {return TableIter<T, K, true>(hash_map[cap-1].after_end);};
+            TableIter<T, K, false> end() {return TableIter<T, K, false>(hash_map[cap-1].after_end);};
             // destructor
             ~Table() {delete [] hash_map;};
     };

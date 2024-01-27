@@ -78,7 +78,7 @@ namespace University
             delete [] hash_map;
             if (cap && elem_num)
             {
-                for (auto it = tbl.begin<true>(); it != tbl.end<true>(); it++)
+                for (TableIter<T,K,true> it = tbl.begin(); it != tbl.end(); it++)
                     if (*it) add(*it);
             }
         }
@@ -124,16 +124,15 @@ namespace University
     template <class T, class K>
     void Table<T,K>::add(T val)
     {
-        if (!hash_map) hash_map = create_map();
         int h = hash(key(val));
         Elem<T> *a = new Elem<T>;
-        a->val = std::move(val);
-        struct Elem<T> *el = hash_map[h].before_begin->next;
-        if (!el)
+        a->val = val;
+        if (hash_map[h].before_begin->next == hash_map[h].after_end)
         { // Element is placed at the beginning
             insert(a, hash_map[h].after_end);
             return;
         }
+        struct Elem<T> *el = hash_map[h].before_begin->next;
         while (el != hash_map[h].after_end)
         {
             if (cmp(a->val, el->val) <= 0)

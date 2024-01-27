@@ -24,7 +24,7 @@ namespace University
     {
     	double avr_sum = 0;
         Table <std::shared_ptr<Student>, std::string> studs = gr.get_studs();
-    	for (auto it = studs.begin<true>(); it != studs.end<true>(); it++)
+    	for (auto it = studs.begin(); it != studs.end(); it++)
     	{
     		if (*it) avr_sum += (*it)->get_avr();
     	}
@@ -50,11 +50,11 @@ namespace University
     std::vector <std::shared_ptr<Student>> App::find_losers()
     {
     	std::vector<std::shared_ptr<Student>> res;
-    	for (auto it = groups.begin<false>(); it != groups.end<false>(); it++)
+    	for (auto it = groups.begin(); it != groups.end(); it++)
     	{
             if (!(*it)) continue;
     		Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
-    		for (auto it_s = studs.begin<true>(); it_s != studs.end<true>(); it++)
+    		for (auto it_s = studs.begin(); it_s != studs.end(); it++)
     		{
                 if (!(*it_s)) continue;
     			std::vector <int> grades = (*it_s)->get_grades();
@@ -76,7 +76,7 @@ namespace University
 
     void App::print(std::ostream &c)
     {
-        for (auto it = groups.begin<false>(); it != groups.end<false>(); it++)
+        for (auto it = groups.begin(); it != groups.end(); it++)
         {
             if (!(*it)) continue;
             c << (*it).get_index() << ": ";
@@ -86,12 +86,12 @@ namespace University
 
     void App::print_with_grades(std::ostream &c)
     {
-        for (auto it = groups.begin<false>(); it != groups.end<false>(); it++)
+        for (auto it = groups.begin(); it != groups.end(); it++)
         {
             if (!(*it)) continue;
             c << (*it).get_index() << ": ";
             Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
-            for (auto it_s = studs.begin<false>(); it_s != studs.end<false>(); it_s++)
+            for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
             {
                 if (!(*it_s)) continue;
                 c << (*it_s)->get_surname() << "\n";

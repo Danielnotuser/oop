@@ -21,7 +21,7 @@ namespace University
             // setters & getters
             int get_group_num() {return groups.get_num();};
             // other
-            void add_group(Group &gr) {groups.add(std::move(gr));};
+            void add_group(Group &gr) {groups.add(gr);};
             void print_group(std::ostream&, Group&);
             void enroll_stud(std::shared_ptr<Student>, Group&);
             void change_sem(Group&, std::shared_ptr<Student>, int);

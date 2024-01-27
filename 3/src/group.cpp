@@ -15,7 +15,7 @@ namespace University
 
     Group::Group(std::string index, int sem) : index(std::move(index)), grades_num(0), sem(sem) 
     {
-    	studs = Table<std::shared_ptr<Student>, std::string>();
+    	studs = Table<std::shared_ptr<Student>, std::string>(key);
     }
     
     Group::Group(std::string index, std::vector<std::shared_ptr<Student>> vect, int sem) :
@@ -31,7 +31,7 @@ namespace University
         index(index), studs(std::move(studs)), sem(sem)
     {
         int max = grades_num;
-        for (auto it = studs.begin<true>(); it != studs.end<true>(); it++)
+        for (auto it = studs.begin(); it != studs.end(); it++)
             if ((*it)->get_grades_num() > max) max = (*it)->get_grades_num();
     }
 
@@ -40,7 +40,7 @@ namespace University
         index = gr.index;
         grades_num = gr.grades_num;
         sem = gr.sem;
-        //studs = gr.studs;
+        studs = gr.studs;
     }
 
     Group &Group::operator=(Group&& gr) noexcept
@@ -49,7 +49,7 @@ namespace University
         grades_num = gr.grades_num;
         sem = gr.sem;
         studs = std::move(gr.studs);
-        gr.studs = Table<std::shared_ptr<Student>, std::string>();
+        gr.studs = Table<std::shared_ptr<Student>, std::string>(University::Group::key);
     }
 
     Group::operator bool() {
