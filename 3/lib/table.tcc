@@ -83,7 +83,7 @@ namespace University
             cap = tbl.cap;
             elem_num = 0;
             key = tbl.key;
-            if (cap && elem_num)
+            if (cap && tbl.elem_num)
             {
             	hash_map = create_map();
                 for (auto it = tbl.begin(); it != tbl.end(); it++)
@@ -178,7 +178,10 @@ namespace University
         {
             Elem<T> *a = hash_map[i].before_begin->next;
             while (a != hash_map[i].after_end)
+            {
                 c << key(a->val) << std::endl;
+                a = a->next;
+            }
         }
     }
 

@@ -35,14 +35,6 @@ namespace University
             if ((*it)->get_grades_num() > max) max = (*it)->get_grades_num();
     }
 
-    Group &Group::operator=(const Group &gr)
-    {
-        index = gr.index;
-        grades_num = gr.grades_num;
-        sem = gr.sem;
-        studs = gr.studs;
-    }
-
     Group &Group::operator=(Group&& gr) noexcept
     {
         index = std::move(gr.index);

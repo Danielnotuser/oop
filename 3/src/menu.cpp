@@ -156,7 +156,7 @@ namespace University
     {
         std::string ind;
         safe_cin<std::string>(ind, "Write index of the group: ");
-        Group gr = a.find_group(ind);
+        Group gr(a.find_group(ind));
         return gr;
     }
 
@@ -206,7 +206,7 @@ namespace University
 
     void dlg_print_group(App &a)
     {
-        Group gr = dlg_find(a);
+        Group gr(dlg_find(a));
         a.print_group(std::cout, gr);
     }
 

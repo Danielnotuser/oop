@@ -79,7 +79,7 @@ namespace University
         for (auto it = groups.begin(); it != groups.end(); it++)
         {
             if (!(*it)) continue;
-            c << (*it).get_index() << ": ";
+            c << (*it).get_index() << ": " << std::endl;
             (*it).print(c);
         }
     }

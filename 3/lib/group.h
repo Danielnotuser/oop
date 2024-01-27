@@ -20,11 +20,11 @@ namespace University
             Group(std::string index, int sem);
             Group(std::string index, std::vector<std::shared_ptr<Student>>students, int sem);
             Group(std::string index, Table <std::shared_ptr<Student>, std::string> studs, int sem);
-            Group(const Group& gr) : studs(gr.studs), index(gr.index), grades_num(gr.grades_num), sem(gr.sem) {};
+            Group(const Group& gr) = default;
             Group(Group&& gr) : studs(std::move(gr.studs)), index(std::move(gr.index)), grades_num(gr.grades_num), sem(gr.sem)
                 {gr.studs = Table<std::shared_ptr<Student>, std::string>();};
             // overload
-            Group &operator=(const Group&);
+            Group &operator=(const Group&) = default;
             Group &operator=(Group&&) noexcept;
             explicit operator bool();
             // setters & getters
