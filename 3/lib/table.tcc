@@ -48,16 +48,22 @@ namespace University
     }
 
     template <class T, class K>
-    Table<T,K>::Table(const Table<T,K> &tbl) : cap(tbl.cap), elem_num(tbl.elem_num)
+    Table<T,K>::Table(const Table<T,K> &tbl)
     {
-        if (hash_map)
-            delete [] hash_map;
-        if (tbl.hash_map)
-        {
-            key = tbl.key;
-            hash_map = create_map();
-            hash_map = tbl.hash_map;
-        }
+    	if (this != &tbl)
+    	{
+	        if (hash_map)
+	            delete [] hash_map;
+	        cap = tbl.get_cap();
+	        elem_num = 0;
+	        key = tbl.key;
+	        if (cap && tbl.elem_num)
+	        {
+	        	hash_map = create_map();
+	            for (auto it = tbl.begin(); it != tbl.end(); it++)
+	            	if (*it) add(*it);
+	        }
+	    }    			
     }
 
     template <class T, class K>
@@ -72,13 +78,15 @@ namespace University
     {
         if (this != &tbl)
         {
+        	if (hash_map) 
+        		delete [] hash_map;
             cap = tbl.cap;
-            elem_num = tbl.elem_num;
+            elem_num = 0;
             key = tbl.key;
-            delete [] hash_map;
             if (cap && elem_num)
             {
-                for (TableIter<T,K,true> it = tbl.begin(); it != tbl.end(); it++)
+            	hash_map = create_map();
+                for (auto it = tbl.begin(); it != tbl.end(); it++)
                     if (*it) add(*it);
             }
         }
@@ -155,6 +163,7 @@ namespace University
             if (key(el->val) == name)
             {
                 link(el->prev, el->next);
+                elem_num--;
                 return;
             }
             el = el->next;

@@ -20,6 +20,17 @@ namespace University
         struct Elem<T> *before_begin = nullptr;
         struct Elem<T> *after_end = nullptr;
         List() {before_begin = new Elem<T>; after_end = new Elem<T>;};
+        ~List() {
+        	Elem<T> *a = before_begin;
+        	Elem<T> *b;
+        	while (a != after_end)
+        	{
+        		b = a;
+        		a = a->next;
+        		delete b;	
+        	}
+        	delete a;
+        };
     };
 
     template<class T, class K, bool is_const>
