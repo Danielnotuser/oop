@@ -1,9 +1,9 @@
 B22-555
 2
 3
-Kasparov H 11
-Carlsen M 12
-Caruana F 10
+Kasparov H 4
+Carlsen M 3
+Caruana F 5
 B23-111
 1
 4
@@ -14,9 +14,9 @@ Snowhite SW 7
 B20-333
 7
 4
-White W 30
-Pinkman J 2
-Fring G 20
+White W 3
+Pinkman J 3
+Fring G 4
 Goodman S 5
 B21-222
 5

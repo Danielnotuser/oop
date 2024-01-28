@@ -20,15 +20,16 @@ namespace University
     	gr.add_stud(stud);
     }
 
-    double App::gpa(Group &gr)
+    double App::group_gpa(Group &gr)
     {
     	double avr_sum = 0;
+        int cnt = 0;
         Table <std::shared_ptr<Student>, std::string> studs = gr.get_studs();
     	for (auto it = studs.begin(); it != studs.end(); it++)
     	{
-    		if (*it) avr_sum += (*it)->get_avr();
+    		if (*it && !((*it)->get_grades().empty())) {avr_sum += (*it)->get_avr(); cnt++;}
     	}
-    	return (double) avr_sum / studs.get_num();
+    	return (double) avr_sum / cnt;
     }
    void App::change_sem(Group &gr, std::shared_ptr<Student> st, int num)
     {
@@ -54,9 +55,10 @@ namespace University
     	{
             if (!(*it)) continue;
     		Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
+            studs.print(std::cout);
     		for (auto it_s = studs.begin(); it_s != studs.end(); it++)
     		{
-                if (!(*it_s)) continue;
+                if (!(*it_s) || (*it_s)->get_grades().empty()) continue;
     			std::vector <int> grades = (*it_s)->get_grades();
     			int num = (*it_s)->get_grades_num();
     			int cnt = 0;
@@ -89,7 +91,7 @@ namespace University
         for (auto it = groups.begin(); it != groups.end(); it++)
         {
             if (!(*it)) continue;
-            c << (*it).get_index() << ": ";
+            c << (*it).get_index() << ": " << std::endl;
             Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
             for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
             {

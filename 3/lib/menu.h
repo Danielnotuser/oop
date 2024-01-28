@@ -15,6 +15,7 @@ namespace University
     void dlg_print_groups(App&);
     void dlg_change_sem(App&);
     void dlg_losers(App&);
+    void dlg_marks(App&);
     void dlg_sheet(App&);
 }
 

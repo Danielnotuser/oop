@@ -135,12 +135,12 @@ namespace University
         int h = hash(key(val));
         Elem<T> *a = new Elem<T>;
         a->val = val;
-        if (hash_map[h].before_begin->next == hash_map[h].after_end)
+        Elem<T> *el = hash_map[h].before_begin->next;
+        if (el == hash_map[h].after_end)
         { // Element is placed at the beginning
             insert(a, hash_map[h].after_end);
             return;
         }
-        struct Elem<T> *el = hash_map[h].before_begin->next;
         while (el != hash_map[h].after_end)
         {
             if (cmp(a->val, el->val) <= 0)
@@ -154,7 +154,7 @@ namespace University
     }
 
     template <class T, class K>
-    void Table<T,K>::del(K name)
+    void Table<T,K>::del(const K &name)
     {
         int h = hash(name);
         Elem<T> *el = hash_map[h].before_begin->next;
@@ -186,7 +186,7 @@ namespace University
     }
 
     template <class T, class K>
-    T &Table<T,K>::find(K name)
+    T &Table<T,K>::find(const K &name)
     {
     	int h = hash(name);
     	Elem<T> *el = hash_map[h].before_begin->next;

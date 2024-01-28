@@ -25,8 +25,8 @@ namespace University
             void print_group(std::ostream&, Group&);
             void enroll_stud(std::shared_ptr<Student>, Group&);
             void change_sem(Group&, std::shared_ptr<Student>, int);
-            double gpa(Group&);
-            Group &find_group(std::string ind) {return groups.find(ind);}
+            double group_gpa(Group&);
+            Group &find_group(std::string &ind) {return groups.find(ind);}
             void print(std::ostream&);
             void print_with_grades(std::ostream&);
             std::vector <std::shared_ptr<Student>> find_losers();

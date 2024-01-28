@@ -58,14 +58,12 @@ namespace University
             fdata >> sem;
             Group gr(ind, sem);
             fdata >> num;
-            std::cout << "Gr = " << ind << " " << sem << " " << num << std::endl;
             for (int i = 0; i < num; i++)
             {
                 std::shared_ptr<Student> st_p;
                 fdata >> name;
                 fdata >> ins;
                 fdata >> gr_num;
-                std::cout << "i = " << i << name << ins << gr_num << std::endl;
                 if (sem < 4)
                     st_p = std::make_shared<Junior>(name, ins, gr_num);
                 else
@@ -76,8 +74,7 @@ namespace University
             fdata >> ind;
         }
     }
-
-    void dlg_sheet(App &a)
+    void dlg_marks(App &a)
     {
         std::string ind, name;
         int num_g, num_s;
@@ -90,9 +87,12 @@ namespace University
             try
             {
                 Group gr = a.find_group(ind);
+                std::cout << "Number of students in " << ind << " = " << gr.get_num() << std::endl;
                 do {
                     safe_cin<int>(num_s, "How many students would you like to enter: ");
-                } while(num_s <= 0);
+                } while(num_s <= 0 || num_s > gr.get_num());
+                std::cout << "Here are the students' surnames: " << std::endl;
+                gr.print(std::cout);
                 for (int i = 0; i < num_s || std::cin.eof(); i++)
                 {
                     safe_cin<std::string>(name, "Write student surname: ");
@@ -122,6 +122,9 @@ namespace University
                 j--;
             }
         }
+    }
+    void dlg_sheet(App &a)
+    {
         std::ofstream fdata;
         fdata.open("../etc/marks.txt");
         if(!fdata)
@@ -130,16 +133,16 @@ namespace University
         std::cout << "Sheet of marks of all groups is now in etc/marks.txt!" << std::endl;
     }
 
-    void stud_add(Group &gr, int num)
+    void stud_add(Group &&gr, int num)
     {
-        int gr_num;
         int sem = gr.get_sem();
         for (int i = 0; i < num; i++)
         {
             std::shared_ptr<Student> st_p;
             std::string name, ins;
+            int gr_num;
             std::cout << "Write surname and initials (separate with space): ";
-            std::cin.getline(name.data(), 50, ' ');
+            std::cin >> name;
             if (std::cin.eof()) throw std::runtime_error("Failed to read value: EOF");
             std::cin >> ins;
             if (std::cin.eof()) throw std::runtime_error("Failed to read value: EOF");
@@ -156,8 +159,7 @@ namespace University
     {
         std::string ind;
         safe_cin<std::string>(ind, "Write index of the group: ");
-        Group gr(a.find_group(ind));
-        return gr;
+        return a.find_group(ind);
     }
 
     void dlg_add_group(App &a)
@@ -168,7 +170,6 @@ namespace University
         safe_cin<std::string>(ind, "Write index of the group: ");
         safe_cin<int>(sem, "Write semester of the group: ");
         Group gr(ind, sem);
-        a.add_group(gr);
         std::cout << "Would you like to add students? (1/0) ";
         std::cin >> b;
         if (b)
@@ -177,37 +178,35 @@ namespace University
             do {
                 safe_cin<int>(num, "How many students would you like to enter? ");
             } while (num <= 0);
-            stud_add(gr, num);
+            stud_add(std::move(gr), num);
         }
+        a.add_group(gr);
     }
 
     void dlg_add_studs(App &a)
     {
-        Group gr = dlg_find(a);
         int num;
         do {
             safe_cin<int>(num, "How many students would you like to enter? ");
         } while (num <= 0);
-        stud_add(gr, num);
+        stud_add(std::move(dlg_find(a)), num);
     }
 
     void dlg_add_stud(App &a)
     {
-        Group gr = dlg_find(a);
-        stud_add(gr, 1);
+        stud_add(std::move(dlg_find(a)), 1);
     }
 
     void dlg_gpa_group(App &a)
     {
         Group gr = dlg_find(a);
-        double gpa = a.gpa(gr);
+        double gpa = a.group_gpa(gr);
         std::cout << "GPA of " << gr.get_index() << " group is " << gpa << std::endl;
     }
 
     void dlg_print_group(App &a)
     {
-        Group gr(dlg_find(a));
-        a.print_group(std::cout, gr);
+        a.print_group(std::cout, dlg_find(a));
     }
 
     void dlg_print_groups(App &a)
@@ -224,7 +223,9 @@ namespace University
     {
         std::cout << "Here are the losers, students with 3 or more F's:";
         std::vector<std::shared_ptr<Student>> losers = a.find_losers();
-        for (int i = 0; i < losers.size(); i++)
-            std::cout << " " << losers[i]->get_surname();
+        if (losers.empty()) std::cout << " there is no.";
+        for (auto & loser : losers)
+            std::cout << " " << loser->get_surname();
+        std::cout << std::endl;
     }
 }

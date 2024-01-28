@@ -21,15 +21,18 @@ namespace University
         struct Elem<T> *after_end = nullptr;
         List() {before_begin = new Elem<T>; after_end = new Elem<T>;};
         ~List() {
-        	Elem<T> *a = before_begin;
-        	Elem<T> *b;
-        	while (a != after_end)
-        	{
-        		b = a;
-        		a = a->next;
-        		delete b;	
-        	}
-        	delete a;
+            if (before_begin != nullptr)
+            {
+                Elem<T> *a = before_begin;
+                Elem<T> *b;
+                while (a != after_end)
+                {
+                    b = a;
+                    a = a->next;
+                    delete b;
+                }
+                delete a;
+            }
         };
     };
 
@@ -95,9 +98,9 @@ namespace University
             Table &operator=(Table<T,K>&&) noexcept;
             // other
             void add(T);
-            void del(K);
+            void del(const K&);
             void print(std::ostream&);
-            T &find(K);
+            T &find(const K&);
             bool is_empty() {return (elem_num == 0);};
             // iterator
             TableIter<T, K, true> begin() const {return TableIter<T, K, true>(hash_map[0].before_begin->next);};
