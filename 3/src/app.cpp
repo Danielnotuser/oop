@@ -146,13 +146,11 @@ namespace University
             for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
             {
                 if (!(*it_s)) continue;
-                std::shared_ptr<Student> st = *it_s;
-                std::vector<int> gr(st->get_grades_num());
-                for (int i = 0; i < st->get_grades_num(); i++)
-                    gr[i] = std::rand() % 4 + 2;
-                st->set_grades(std::move(gr));
+                std::vector<int> gr((*it_s)->get_grades_num());
+                std::random_device r;
+                std::generate(gr.begin(), gr.end(), [&]{return r() % 4 + 2;});
+                (*it_s)->set_grades(std::move(gr));
             }
-
         }
     }
 

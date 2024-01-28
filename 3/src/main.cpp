@@ -7,7 +7,6 @@ using namespace University;
 
 int main()
 {
-    srand(time(nullptr));
     int var, num_opts = 13;
     App my_app;
     const char *opts[] = {"0. Quit","1. Read groups from file.","2. Add Group","3. Add list of student to the group.",
