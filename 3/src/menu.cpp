@@ -74,7 +74,14 @@ namespace University
             a.add_group(gr);
             fdata >> ind;
         }
+        fdata.close();
     }
+    void dlg_rand_marks(App &a)
+    {
+        a.rand_marks();
+        std::cout << "Marks successfully set." << std::endl;
+    }
+
     void dlg_marks(App &a)
     {
         std::string ind, name;
@@ -108,7 +115,7 @@ namespace University
                             std::cin >> n;
                             grades.push_back(n);
                         }
-                        st->set_grades(grades);
+                        st->set_grades(std::move(grades));
                     }
                     catch(const std::invalid_argument& e)
                     {
@@ -132,6 +139,7 @@ namespace University
             throw::std::runtime_error("Failed to open the file.");
         a.print_with_grades(fdata);
         std::cout << "Sheet of marks of all groups is now in etc/marks.txt!" << std::endl;
+        fdata.close();
     }
 
     void stud_add(Group &&gr, int num)

@@ -1,5 +1,7 @@
 #include <vector>
 #include <string>
+#include <random>
+#include <algorithm>
 #include <thread>
 
 #include "../lib/app.h"
@@ -133,6 +135,25 @@ namespace University
         for(auto& th : threads)
             th.join();
         return res;
+    }
+
+    void App::rand_marks()
+    {
+        for (auto it = groups.begin(); it != groups.end(); it++)
+        {
+            if (!(*it)) continue;
+            Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
+            for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
+            {
+                if (!(*it_s)) continue;
+                std::shared_ptr<Student> st = *it_s;
+                std::vector<int> gr(st->get_grades_num());
+                for (int i = 0; i < st->get_grades_num(); i++)
+                    gr[i] = std::rand() % 4 + 2;
+                st->set_grades(std::move(gr));
+            }
+
+        }
     }
 
     void App::print_group(std::ostream &c, Group& gr)

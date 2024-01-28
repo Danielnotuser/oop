@@ -46,3 +46,102 @@ Rodriguez W 11
 Lewis X 12
 Lee Y 13
 Walker Z 14
+B23-235
+4
+3
+Petrov A 4
+Ivanov V 3
+Sidorov D 5
+B55-123
+5
+3
+Smirnov K 2
+Kuznetsov S 1
+Popov P 6
+B54-122
+2
+3
+Sokolov M 4
+Lebedev I 3
+Kozlov N 2
+B12-777
+6
+3
+Novikov G 5
+Morozov L 1
+Volkov R 6
+B23-781
+2
+3
+Pavlov E 4
+Semenov H 3
+Bogdanov T 2
+B45-132
+1
+3
+Vorobyov U 5
+Vinogradov X 1
+Kuzmin Y 6
+B65-287
+7
+3
+Mironov J 4
+Akimov Q 3
+Egorov Z 2
+B32-764
+5
+3
+Savin F 5
+Titov B 1
+Zaitsev C 6
+B43-231
+8
+3
+Fedorov W 4
+Andreev O 3
+Golubev S 2
+B12-522
+2
+3
+Panov P 5
+Karpov M 1
+Kravtsov I 6
+B67-234
+2
+3
+Abramov N 4
+Galin D 3
+Voronov K 2
+B77-787
+3
+3
+Belov S 5
+Tarasov R 1
+Semyonov E 6
+B65-723
+4
+3
+Belyaev H 4
+Konstantinov T 3
+Shilov U 2
+B89-476
+5
+3
+Maksimov X 5
+Gerasimov Y 1
+Ponomarev L 6
+B98-565
+3
+3
+Grigoriev R 4
+Kuznetsov F 3
+Polikarpov B 2
+B88-444
+7
+5
+Zinoviev Q 5
+Gorshkov Z 1
+Samsonov C 6
+Malyshev W 4
+Dementiev O 3
+

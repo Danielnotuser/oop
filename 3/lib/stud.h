@@ -28,7 +28,7 @@ namespace University
             std::vector <int> get_grades() const {return grades;};
             Student &set_surname(std::string sur);
             Student &set_initials(std::string ins);
-            Student &set_grades(std::vector <int> grades_vect);
+            Student &set_grades(std::vector <int> &&grades_vect);
             // other
             double get_avr();
             void refresh_grades(int num) {grades_num = num;};

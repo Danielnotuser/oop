@@ -29,6 +29,7 @@ namespace University
             Group &group_change_sem(Group&&, std::vector<int>);
             double group_gpa(Group&);
             Group &find_group(std::string &ind) {return groups.find(ind);}
+            void rand_marks();
             void print(std::ostream&);
             void print_with_grades(std::ostream&);
             std::vector <std::shared_ptr<Student>> find_losers();

@@ -34,7 +34,7 @@ namespace University
         return *this;
     }
 
-    Student &Student::set_grades(std::vector <int> grades_vect)
+    Student &Student::set_grades(std::vector <int> &&grades_vect)
     {
         grades = grades_vect;
         return *this;
