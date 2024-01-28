@@ -25,8 +25,7 @@ namespace University
             void del_group(std::string ind) {groups.del(ind);};
             void print_group(std::ostream&, Group&);
             void enroll_stud(std::shared_ptr<Student>, Group&);
-            Group &change_sem(Group&, std::shared_ptr<Student>&, int);
-            Group &group_change_sem(Group&&, std::vector<int>);
+            Group &group_change_sem(Group&&, std::vector<int>, std::vector<std::string>);
             double group_gpa(Group&);
             Group &find_group(std::string &ind) {return groups.find(ind);}
             void rand_marks();

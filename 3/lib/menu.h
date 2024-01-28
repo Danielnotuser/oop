@@ -13,6 +13,7 @@ namespace University
     void dlg_gpa_group(App&);
     void dlg_print_group(App&);
     void dlg_print_groups(App&);
+    void dlg_print_with_marks(App&);
     void dlg_change_sem(App&);
     void dlg_losers(App&);
     void dlg_rand_marks(App&);

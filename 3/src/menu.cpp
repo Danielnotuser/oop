@@ -66,9 +66,15 @@ namespace University
                 fdata >> ins;
                 fdata >> gr_num;
                 if (sem < 4)
-                    st_p = std::make_shared<Junior>(name, ins, gr_num);
+                {
+                    st_p = std::make_shared<Student>(name, ins, gr_num);
+                }
+
                 else
-                    st_p = std::make_shared<Senior>(name, ins, gr_num);
+                {
+                    std::shared_ptr<Senior> sen = std::make_shared<Senior>(name, ins, gr_num);
+                    st_p = std::static_pointer_cast<Student>(sen);
+                }
                 gr.add_stud(st_p);
             }
             a.add_group(gr);
@@ -158,8 +164,15 @@ namespace University
             do {
                 safe_cin<int>(gr_num, "Write number of grades: ");
             } while (gr_num <= 0);
-            if (sem < 4) st_p = std::make_shared<Junior>(name, ins, gr_num);
-            else st_p = std::make_shared<Senior>(name, ins, gr_num);
+            if (sem < 4)
+            {
+                st_p = std::make_shared<Student>(name, ins, gr_num);
+            }
+            else
+            {
+                std::shared_ptr<Senior> sen = std::make_shared<Senior>(name, ins, gr_num);
+                st_p = std::static_pointer_cast<Student>(sen);
+            }
             gr.add_stud(st_p);
         }
     }
@@ -224,6 +237,11 @@ namespace University
         a.print(std::cout);
     }
 
+    void dlg_print_with_marks(App &a)
+    {
+        a.print_with_grades(std::cout);
+    }
+
     void dlg_change_sem(App &a)
     {
         Group gr = dlg_find(a);
@@ -243,28 +261,21 @@ namespace University
             a.del_group(gr.get_index());
             return;
         }
-        gr = a.group_change_sem(std::move(gr), grnums);
-        if (gr.get_sem() == 4)
+        std::vector<std::string> topics;
+        if (gr.get_sem() == 3)
         {
             bool set_arw;
-            std::cout << "Now students of this group are seniors. Do you want to set ARW topics for them? (1/0) ";
-            std::cin >> set_arw;
-            if (set_arw)
+            std::cout << "Now students of this group are seniors. Now you should set theirs ARW topics." << std::endl;
+            std::cout << "Here are the students' surnames, now you should consecutively set theirs ARW topics." << std::endl;
+            gr.print(std::cout);
+            for (int i = 0; i < gr.get_num(); i++)
             {
-                std::cout << "Here are the students' surnames, now you should consecutively set theirs ARW topics." << std::endl;
-                gr.print(std::cout);
-                for (int i = 0; i < gr.get_num(); i++)
-                {
-                    std::string name, topic;
-                    safe_cin<std::string>(name, "Write student surname: ");
-                    std::shared_ptr<Student> st = gr.find_stud(name);
-                    safe_cin<std::string>(topic, "Write topic: ");
-                    Senior s = std::move(dynamic_cast<Senior&>(*st));
-                    s.set_topic(topic);
-                }
-
+                std::string name, topic;
+                safe_cin<std::string>(topic, "Write topic: ");
+                topics.push_back(topic);
             }
         }
+        gr = a.group_change_sem(std::move(gr), grnums, topics);
     }
 
     void dlg_losers(App &a)

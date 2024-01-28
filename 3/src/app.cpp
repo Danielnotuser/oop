@@ -43,28 +43,28 @@ namespace University
     	return (double) avr_sum / cnt;
     }
 
-    Group &App::change_sem(Group &gr, std::shared_ptr<Student> &st, int num)
+    Group &change_sem(Group &gr, std::shared_ptr<Student> &st, int num, std::vector<std::string> topics, int i)
     {
         if (num > gr.get_grnum()) gr.set_grnum(num);
         st->refresh_grades(num);
         int s = gr.get_sem();
         if (s == 3)
         {
-            Junior s = std::move(dynamic_cast<Junior&>(*st));
-            std::shared_ptr<Student> sen = std::make_shared<Senior>(dynamic_cast<Student&>(s));
-            st = sen;
+            std::shared_ptr<Senior> sen = std::make_shared<Senior>(*st);
+            sen->set_topic(topics[i]);
+            st = std::static_pointer_cast<Student>(sen);
         }
         return gr;
     }
 
 
-    Group &App::group_change_sem(Group&& gr, std::vector<int> grnums)
+    Group &App::group_change_sem(Group&& gr, std::vector<int> grnums, std::vector<std::string> topics)
     {
         Table<std::shared_ptr<Student>, std::string> studs = gr.get_studs();
         int i = 0;
         for (auto it = studs.begin(); it != studs.end(); it++)
         {
-            if (*it) {gr = change_sem(gr, *it, grnums[i]); i++;}
+            if (*it) {gr = change_sem(gr, *it, grnums[i], topics, i); i++;}
         }
         gr.set_sem(gr.get_sem() + 1);
         return gr;
@@ -146,7 +146,7 @@ namespace University
             for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
             {
                 if (!(*it_s)) continue;
-                std::vector<int> gr((*it_s)->get_grades_num());
+                std::vector <int> gr((*it_s)->get_grades_num());
                 std::random_device r;
                 std::generate(gr.begin(), gr.end(), [&]{return r() % 4 + 2;});
                 (*it_s)->set_grades(std::move(gr));

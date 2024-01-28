@@ -104,7 +104,7 @@ B12-522
 2
 3
 Panov P 5
-Karpov M 1
+Karpov M 3
 Kravtsov I 6
 B67-234
 2

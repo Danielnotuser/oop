@@ -32,7 +32,7 @@ namespace University
             int get_sem() const {return sem;};
             int get_grnum() const {return grades_num;};
             int get_num() const {return studs.get_num();};
-            Table<std::shared_ptr<Student>, std::string> get_studs() {return std::move(studs);};
+            Table<std::shared_ptr<Student>, std::string> get_studs() {return studs;};
             Group &set_sem(int s) {sem = s; return *this;};
             Group &set_grnum(int num) {grades_num = num; return *this;};
             Group &set_studs(Table <std::shared_ptr<Student>, std::string> students) {studs = std::move(students); return *this;};

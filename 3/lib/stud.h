@@ -36,15 +36,6 @@ namespace University
             virtual ~Student() = default;
     };
 
-    class Junior : public Student {
-        public:
-            Junior(std::string surname, std::string initials, int grades_num) : Student(surname, initials, grades_num) {};
-            Junior(std::string surname, std::string initials, std::vector <int> grades, int num) : Student(surname, initials, grades, num) {};
-            Junior(Student &st) : Student(std::move(st)) {};
-            Junior(Junior &&j) noexcept : Student(j.get_surname(), j.get_initials(), j.get_grades(), j.get_grades_num()) {};
-            ~Junior() override = default;
-    };
-
     // ARW - Academic and research work
     typedef struct AcademicWork {
         std::string topic, place;
