@@ -31,7 +31,7 @@ namespace University
             Student &set_grades(std::vector <int> &&grades_vect);
             // other
             double get_avr();
-            void refresh_grades(int num) {grades_num = num;};
+            void refresh_grades(int num) {grades.clear(); grades_num = num;};
             // destructor
             virtual ~Student() = default;
     };
