@@ -54,7 +54,7 @@ namespace University
     	{
 	        if (hash_map)
 	            delete [] hash_map;
-	        cap = tbl.get_cap();
+	        cap = tbl.cap;
 	        elem_num = 0;
 	        key = tbl.key;
 	        if (cap && tbl.elem_num)
@@ -192,7 +192,7 @@ namespace University
     	Elem<T> *el = hash_map[h].before_begin->next;
     	while (el != hash_map[h].after_end)
     	{
-    		if (key(el->val) == name)
+    		if (el->val && key(el->val) == name)
     			return el->val;
             el = el->next;
     	}

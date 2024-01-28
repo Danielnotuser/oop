@@ -37,7 +37,7 @@ namespace University
         int s = gr.get_sem();
         if (s == 3)
         {
-            std::shared_ptr<Student> sen = std::make_shared<Senior>(*st);
+            std::shared_ptr<Student> sen = std::make_shared<Senior>(static_cast<Student&>(*st));
             st = sen;
         }
         else if (s < 8)

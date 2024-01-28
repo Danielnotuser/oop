@@ -73,11 +73,11 @@ namespace University
             List<T> *hash_map = nullptr;
             int cap;
             int elem_num = 0;
-            void link(Elem<T>*,Elem<T>*);
-            List<T>* create_map();
             K (*key) (T&);
+            List<T>* create_map();
             int hash(K);
             int cmp(T&, T&) const;
+            void link(Elem<T>*,Elem<T>*);
             void insert(Elem<T>*,Elem<T>*);
         public:
             // constructors
