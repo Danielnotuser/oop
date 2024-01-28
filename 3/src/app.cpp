@@ -27,8 +27,16 @@ namespace University
         Table <std::shared_ptr<Student>, std::string> studs = gr.get_studs();
     	for (auto it = studs.begin(); it != studs.end(); it++)
     	{
-    		if (*it && !((*it)->get_grades().empty())) {avr_sum += (*it)->get_avr(); cnt++;}
+    		if (*it) 
+    		{
+    			if (!((*it)->get_grades().empty()))
+    			{
+    				avr_sum += (*it)->get_avr() * (*it)->get_grades_num(); 
+    				cnt += (*it)->get_grades_num();
+    			}
+    		}
     	}
+    	if (!cnt) return 0;
     	return (double) avr_sum / cnt;
     }
    void App::change_sem(Group &gr, std::shared_ptr<Student> st, int num)
@@ -55,8 +63,7 @@ namespace University
     	{
             if (!(*it)) continue;
     		Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
-            studs.print(std::cout);
-    		for (auto it_s = studs.begin(); it_s != studs.end(); it++)
+    		for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
     		{
                 if (!(*it_s) || (*it_s)->get_grades().empty()) continue;
     			std::vector <int> grades = (*it_s)->get_grades();

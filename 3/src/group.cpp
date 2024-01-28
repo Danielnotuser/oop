@@ -8,11 +8,6 @@ namespace University
         return st->get_surname();
     }
 
-    /*Group::Group()
-    {
-        studs = Table<std::shared_ptr<Student>, std::string>();
-    }*/
-
     Group::Group(std::string index, int sem) : index(std::move(index)), grades_num(0), sem(sem) 
     {
     	studs = Table<std::shared_ptr<Student>, std::string>(key);
@@ -42,10 +37,11 @@ namespace University
         sem = gr.sem;
         studs = std::move(gr.studs);
         gr.studs = Table<std::shared_ptr<Student>, std::string>(University::Group::key);
+        return *this;
     }
 
     Group::operator bool() {
-        return !studs.is_empty();
+        return !(studs.is_empty());
     }
 
 }

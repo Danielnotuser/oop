@@ -201,7 +201,8 @@ namespace University
     {
         Group gr = dlg_find(a);
         double gpa = a.group_gpa(gr);
-        std::cout << "GPA of " << gr.get_index() << " group is " << gpa << std::endl;
+        std::cout << "GPA of " << gr.get_index() << " group is " ; 
+        std::cout << gpa << std::endl;
     }
 
     void dlg_print_group(App &a)

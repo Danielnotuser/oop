@@ -42,7 +42,8 @@ namespace University
 
     double Student::get_avr()
     {
-    	double sum;
+    	double sum = 0;
+    	if (grades.empty()) return 0;
     	for (int i = 0; i < grades_num; i++)
     		sum += grades[i];
     	return (double) sum / grades_num;
