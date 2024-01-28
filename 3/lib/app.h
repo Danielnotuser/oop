@@ -22,15 +22,17 @@ namespace University
             int get_group_num() {return groups.get_num();};
             // other
             void add_group(Group &gr) {groups.add(gr);};
+            void del_group(std::string ind) {groups.del(ind);};
             void print_group(std::ostream&, Group&);
             void enroll_stud(std::shared_ptr<Student>, Group&);
-            void change_sem(Group&, std::shared_ptr<Student>, int);
+            Group &change_sem(Group&, std::shared_ptr<Student>&, int);
+            Group &group_change_sem(Group&&, std::vector<int>);
             double group_gpa(Group&);
             Group &find_group(std::string &ind) {return groups.find(ind);}
             void print(std::ostream&);
             void print_with_grades(std::ostream&);
             std::vector <std::shared_ptr<Student>> find_losers();
-            
+            std::vector <std::shared_ptr<Student>> multithread_losers();
             // destructors
             ~App() = default;
     };

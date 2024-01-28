@@ -4,6 +4,7 @@
 #include <string>
 #include <cstring>
 #include <limits>
+#include <chrono>
 #include "../lib/app.h"
 
 namespace University
@@ -218,15 +219,67 @@ namespace University
     void dlg_change_sem(App &a)
     {
         Group gr = dlg_find(a);
+        std::vector<int> grnums;
+        std::cout << "Here are the students' surnames, you should consecutively change theirs numbers of grades." << std::endl;
+        gr.print(std::cout);
+        for (int i = 0; i < gr.get_num(); i++)
+        {
+            int gr_num;
+            do {
+                safe_cin<int>(gr_num, "Write new number of grades: ");
+            } while (gr_num <= 0);
+            grnums.push_back(gr_num);
+        }
+        if (gr.get_sem() == 8) {
+            std::cout << "Group " << gr.get_index() << " has graduated!" << std::endl;
+            a.del_group(gr.get_index());
+            return;
+        }
+        gr = a.group_change_sem(std::move(gr), grnums);
+        if (gr.get_sem() == 4)
+        {
+            bool set_arw;
+            std::cout << "Now students of this group are seniors. Do you want to set ARW topics for them? (1/0) ";
+            std::cin >> set_arw;
+            if (set_arw)
+            {
+                std::cout << "Here are the students' surnames, now you should consecutively set theirs ARW topics." << std::endl;
+                gr.print(std::cout);
+                for (int i = 0; i < gr.get_num(); i++)
+                {
+                    std::string name, topic;
+                    safe_cin<std::string>(name, "Write student surname: ");
+                    std::shared_ptr<Student> st = gr.find_stud(name);
+                    safe_cin<std::string>(topic, "Write topic: ");
+                    Senior s = std::move(dynamic_cast<Senior&>(*st));
+                    s.set_topic(topic);
+                }
+
+            }
+        }
     }
 
     void dlg_losers(App &a)
     {
         std::cout << "Here are the losers, students with 3 or more F's:";
+        const auto start{std::chrono::steady_clock::now()};
         std::vector<std::shared_ptr<Student>> losers = a.find_losers();
+        const auto end{std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds{end - start};
         if (losers.empty()) std::cout << " there is no.";
         for (auto & loser : losers)
             std::cout << " " << loser->get_surname();
         std::cout << std::endl;
+        std::cout << "Time spent (without multithreading): " << elapsed_seconds << std::endl;
+        std::cout << "Here are the losers, students with 3 or more F's:";
+        const auto start_m{std::chrono::steady_clock::now()};
+        std::vector<std::shared_ptr<Student>> big_losers = a.multithread_losers();
+        const auto end_m{std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds_m{end_m - start_m};
+        if (big_losers.empty()) std::cout << " there is no.";
+        for (auto & loser : big_losers)
+            std::cout << " " << loser->get_surname();
+        std::cout << std::endl;
+        std::cout << "Time spent (with multithreading): " << elapsed_seconds << std::endl;
     }
 }

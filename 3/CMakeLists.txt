@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 project(oopsemcon)
 
+find_package(Threads REQUIRED)
+link_libraries(Threads::Threads)
+add_compile_options(-fsanitize=thread -g)
+add_link_options(-fsanitize=thread)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -g")
 
