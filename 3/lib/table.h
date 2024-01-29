@@ -8,13 +8,14 @@ namespace University
 {
     template<class T, class K>
     class Table;
-    // structs for List of T values
+    // struct for Element of List
     template <class T>
     struct Elem {
         T val = T{};
         struct Elem<T> *prev = nullptr;
         struct Elem<T> *next = nullptr;
     };
+    // List of T values
     template <class T>
     struct List {
         struct Elem<T> *before_begin = nullptr;
@@ -35,7 +36,9 @@ namespace University
             }
         };
     };
-
+	/**
+	* @class TableIter Iterator of template Table class
+	*/
     template<class T, class K, bool is_const>
     class TableIter
     {
@@ -69,7 +72,10 @@ namespace University
         bool operator ==(const TableIter<T, K, other_const>& o) const noexcept {return node == o.node;};
 
     };
-    // template for Students and Groups
+    /**
+    * @class Table Class that contains array of lists with hash 
+    * @brief T stands for type of value and K stands for type of key
+    */
     template <class T, class K>
     class Table {
         private:
@@ -84,25 +90,77 @@ namespace University
             void insert(Elem<T>*,Elem<T>*);
         public:
             // constructors
+            /**
+            * @brief Construct an empty object
+            */
             Table() {};
+            /**
+            * @brief Constructor that creates empty hash_map with key func
+            * @param key_func Function for returning a key of T value
+            * @param cap Capacity of hash_map
+            * @throw std::invalid_argument if cap unpositive
+            * @throw error to catch and free the hash_map
+            */
             Table(K (*key_func) (T&), int cap = 30) : cap(cap) {key = key_func; hash_map = create_map();};
-            Table(std::vector<T>, K (*) (T&), int = 30);
+            /**
+            * @brief Constructor that fill hash_map with values from vector
+            * @param vect Vector of T values that will be added
+            * @param key_func Function for returning a key of T value
+            */
+            Table(std::vector<T> vect, K (*key_func) (T&), int = 30);
+            /**
+            * @brief Copying contructor
+            */
             Table(const Table<T,K>&);
+            /**
+            * @brief Moving contructor
+            */
             Table(Table<T,K>&&) noexcept;
             // setters & getters
             int get_cap() const {return cap;};
+            /**
+            * @brief Getter for number of elements
+            * @return int Number of actual values
+            */
             int get_num() const {return elem_num;};
             Table &set_elem_num(int num) {elem_num = num; return *this;};
             // overload
+            /**
+            * @brief Copying assignment
+            */
             Table &operator=(const Table<T,K>&);
+            /**
+            * @brief Moving assignment
+            */
             Table &operator=(Table<T,K>&&) noexcept;
             // other
-            void add(T);
-            void del(const K&);
-            void print(std::ostream&);
-            T &find(const K&);
+            /**
+            * @brief Method for adding a value to the hash_map
+            * @param v T value
+            */
+            void add(T v);
+            /**
+            * @brief Delete value by its key
+            * @param k Key of value
+            * @throw std::invalid_argument if there is no value with this key
+            */
+            void del(const K& k);
+            /**
+            * @brief Table print
+            * @param c Stream for output
+            void print(std::ostream& с);
+            /**
+            * @brief Find value by key
+            * @param k key of value
+            * @throw std::invalid_argument if there is no value with this key
+            */
+            T &find(const K& k);
             bool is_empty() {return (elem_num == 0);};
             // iterator
+            /**
+            * @brief Iterator to the beginning of the map
+            * @return TableIter const iterator of iterator
+            */
             TableIter<T, K, true> begin() const {return TableIter<T, K, true>(hash_map[0].before_begin->next);};
             TableIter<T, K, false> begin() {return TableIter<T, K, false>(hash_map[0].before_begin->next);};
             TableIter<T, K, true> end() const {return TableIter<T, K, true>(hash_map[cap-1].after_end);};

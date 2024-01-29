@@ -7,6 +7,9 @@
 
 namespace University 
 {
+	/*
+	* @class Group of students
+	*/
     class Group {
         private:
             Table<std::shared_ptr<Student>, std::string>studs;
@@ -16,6 +19,9 @@ namespace University
             int sem;
         public:
             // constructors
+            /*
+            * @brief Empty constructor, generates new table of students
+            */
             Group() {studs = Table<std::shared_ptr<Student>, std::string>(key);};
             Group(std::string index, int sem);
             Group(std::string index, std::vector<std::shared_ptr<Student>>students, int sem);
@@ -37,9 +43,26 @@ namespace University
             Group &set_grnum(int num) {grades_num = num; return *this;};
             Group &set_studs(Table <std::shared_ptr<Student>, std::string> students) {studs = std::move(students); return *this;};
             // other
+            /*
+            * @brief Delete student from the studs table
+            * @param st Key for deleting (surname)
+            */
             void del_stud(std::string st) {studs.del(st);};
+            /*
+            * @brief Add student to the table
+            * @param st Reference to the std::shared_ptr<Student> - value of table of students
+            */
             void add_stud(std::shared_ptr<Student> &st) {if (int n = st->get_grades_num() > grades_num) grades_num = n; studs.add(st);};
+			/*
+			* @brief Find student by name in the table of students of the group
+			* @name Surname of the student
+			* @return std::shared_ptr<Student> Student pointer
+			*/
             std::shared_ptr<Student> find_stud(std::string &name) {return studs.find(name);};
+            /*
+            * @brief Print table of students
+            * @param c Stream for output
+            */
             void print(std::ostream &c) {studs.print(c);};
             ~Group() = default;
     };
