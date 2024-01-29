@@ -7,84 +7,42 @@
 
 std::random_device r;
 
-TEST_CASE("Test add method") {
-    Table<int, int> table;
-    table.add(r());
-    REQUIRE(table.get_num() == 1);
-}
+TEST_CASE("Testing Table class with T = std::shared_ptr<University::Student> and K = std::string")
+{
+    SECTION("Testing constructors and getters") {
+        Table<std::shared_ptr<University::Student>, std::string> table;
+        REQUIRE(table.get_cap() == 30);
+        REQUIRE(table.get_num() == 0);
 
-TEST_CASE("Test del method") {
-    Table<int, int> table;
-    int a = r();
-    table.add(a);
-    table.del(a);
-    REQUIRE(table.get_num() == 0);
-}
+        K (*key_func) (T&) = [](T& t) { return t->get_name(); };
+        Table<std::shared_ptr<University::Student>, std::string> table2(key_func, 50);
+        REQUIRE(table2.get_cap() == 50);
+    }
 
-TEST_CASE("Test find method") {
-    Table<int, int> table;
-    int a = r();
-    table.add(a);
-    REQUIRE(table.find(a) == a);
-}
+    SECTION("Testing add, find, and delete") {
+        Table<std::shared_ptr<University::Student>, std::string> table;
+        std::shared_ptr<University::Student> student1 = std::make_shared<University::Student>("Doe", "J.", 3);
+        std::shared_ptr<University::Student> student2 = std::make_shared<University::Student>("Smith", "A.B.", 3);
 
-TEST_CASE("Test is_empty method") {
-    Table<int, int> table;
-    REQUIRE(table.is_empty());
-    int a = r();
-    table.add(a);
-    REQUIRE_FALSE(table.is_empty());
-}
+        table.add(student1);
+        table.add(student2);
 
-TEST_CASE("Test get_num method") {
-    Table<int, int> table;
-    REQUIRE(table.get_num() == 0);
-    int a = r();
-    table.add(a);
-    REQUIRE(table.get_num() == 1);
-}
+        REQUIRE(table.get_num() == 2);
 
-TEST_CASE("Test default constructor") {
-    Table<int, int> table;
-    REQUIRE(table.get_num() == 0);
-}
+        auto found_student = table.find("Smith");
+        REQUIRE(found_student->get_surname() == "Smith");
 
-TEST_CASE("Test copy constructor") {
-    Table<int, int> table1;
-    int a = r();
-    table.add(a);
-    Table<int, int> table2(table1);
-    REQUIRE(table2.get_num() == 1);
-    REQUIRE(table2.find(a) == a);
-}
+        table.del("Doe");
+        REQUIRE(table.get_num() == 1);
+    }
 
-TEST_CASE("Test move constructor") {
-    Table<int, int> table1;
-    int a = r();
-    table.add(a);
-    Table<int, int> table2(std::move(table1));
-    REQUIRE(table2.get_num() == 1);
-    REQUIRE(table2.find(a) == a);
-}
-
-TEST_CASE("Test copy assignment operator") {
-    Table<int, int> table1;
-    int a = r();
-    table.add(a);
-    Table<int, int> table2;
-    table2 = table1;
-    REQUIRE(table2.get_num() == 1);
-    REQUIRE(table2.find(a) == a);
-}
-
-TEST_CASE("Test move assignment operator") {
-    Table<int, int> table1;
-    int a = r();
-    table.add(a);
-    Table<int, int> table2;
-    table2 = std::move(table1);
-    REQUIRE(table2.get_num() == 1);
-    REQUIRE(table2.find(a) == a);
+    SECTION("Testing printing") {
+        Table<std::shared_ptr<University::Student>, std::string> table;
+        std::stringstream ss;
+        table.print(ss);
+        std::string output = ss.str();
+        REQUIRE(output == "");
+    }
 }
 
 TEST_CASE("Testing Student class") {

@@ -15,6 +15,6 @@ add_library(table INTERFACE lib/table.h lib/table.tcc)
 link_libraries(stud group app table menu)
 
 add_executable(main src/main.cpp)
-add_executable(test tests/tests.cpp)
+add_executable(tests tests/tests.cpp)
 
 target_link_libraries(main stud group app table menu)
