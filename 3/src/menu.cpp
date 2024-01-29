@@ -6,6 +6,9 @@
 #include <limits>
 #include <chrono>
 #include <random>
+#include <algorithm>
+#include <functional>
+#include <iterator>
 #include "../lib/app.h"
 
 namespace University
@@ -330,19 +333,20 @@ namespace University
         const auto end{std::chrono::steady_clock::now()};
         const std::chrono::duration<double> elapsed_seconds{end - start};
         if (losers.empty()) std::cout << " there is no.";
-        for (auto & loser : losers)
-            std::cout << " " << loser->get_surname();
+        //for (auto & loser : losers)
+        //    std::cout << " " << loser->get_surname();
         std::cout << std::endl;
-        std::cout << "Time spent (without multithreading): " << std::setprecision(max_precision) << elapsed_seconds << std::endl;
+        std::cout << "Time spent (without multithreading): " << elapsed_seconds << std::endl;
         std::cout << "Here are the losers, students with 3 or more F's:";
         const auto start_m{std::chrono::steady_clock::now()};
         std::vector<std::shared_ptr<Student>> big_losers = a.multithread_losers();
         const auto end_m{std::chrono::steady_clock::now()};
         const std::chrono::duration<double> elapsed_seconds_m{end_m - start_m};
         if (big_losers.empty()) std::cout << " there is no.";
-        for (auto & loser : big_losers)
-            std::cout << " " << loser->get_surname();
+        //for (auto & loser : big_losers)
+        //    std::cout << " " << loser->get_surname();
         std::cout << std::endl;
-        std::cout << "Time spent (with multithreading): " << std::setprecision(max_precision) << elapsed_seconds_m << std::endl;
+        // std::setprecision(max_precision) << 
+        std::cout << "Time spent (with multithreading): " << elapsed_seconds_m << std::endl;
     }
 }

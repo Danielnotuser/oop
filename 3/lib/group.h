@@ -37,6 +37,7 @@ namespace University
             Group &set_grnum(int num) {grades_num = num; return *this;};
             Group &set_studs(Table <std::shared_ptr<Student>, std::string> students) {studs = std::move(students); return *this;};
             // other
+            void del_stud(std::string st) {studs.del(st);};
             void add_stud(std::shared_ptr<Student> &st) {if (int n = st->get_grades_num() > grades_num) grades_num = n; studs.add(st);};
             std::shared_ptr<Student> find_stud(std::string &name) {return studs.find(name);};
             void print(std::ostream &c) {studs.print(c);};

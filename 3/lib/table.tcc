@@ -164,6 +164,7 @@ namespace University
             {
                 link(el->prev, el->next);
                 elem_num--;
+                delete el;
                 return;
             }
             el = el->next;
@@ -174,6 +175,7 @@ namespace University
     template <class T, class K>
     void Table<T,K>::print(std::ostream &c)
     {
+    	if (!elem_num) return;
         for (int i = 0; i < cap; i++)
         {
             Elem<T> *a = hash_map[i].before_begin->next;
@@ -192,7 +194,7 @@ namespace University
     	Elem<T> *el = hash_map[h].before_begin->next;
     	while (el != hash_map[h].after_end)
     	{
-    		if (el->val && key(el->val) == name)
+    		if (key(el->val) == name)
     			return el->val;
             el = el->next;
     	}

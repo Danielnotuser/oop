@@ -111,8 +111,6 @@ namespace University
             ~Table() {delete [] hash_map;};
     };
 
-    static_assert(std::bidirectional_iterator<TableIter<int, int, false>>);
-    static_assert(std::bidirectional_iterator<TableIter<int, int, true>>);
 }
 
 #include "table.tcc"

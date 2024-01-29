@@ -142,28 +142,6 @@ namespace University
         return res;
     }
 
-
-    template<typename ItIn, typename ItOut>
-    ItOut even_mt(ItIn first, ItIn last, ItOut first_out) {
-        std::vector<std::future<std::vector<std::iter_value_t<ItIn>>>> results;
-        auto threadNum = std::thread::hardware_concurrency();
-        auto elements = std::distance(first, last);
-        results.reserve(elements);
-        for (size_t i = 0; i < threadNum; ++i) {
-            size_t start_i = i * elements / threadNum;
-            size_t end_i = (i + 1) * elements / threadNum;
-            auto start = std::next(first, start_i);
-            auto end = std::next(first, end_i);
-            results.push_back(std::async([=](){std::vector<std::iter_value_t<ItIn>> res;even(start, end, std::back_inserter(res));return res;}));
-        }
-
-        for(auto& vecF : results) {
-            auto vec = std::move(vecF.get());
-            first_out = std::move(vec.begin(), vec.end(), first_out);
-        }
-        return first_out;
-    }
-
     void App::rand_marks()
     {
         for (auto it = groups.begin(); it != groups.end(); it++)

@@ -8,7 +8,7 @@ namespace University
         return st->get_surname();
     }
 
-    Group::Group(std::string index, int sem) : index(std::move(index)), grades_num(0), sem(sem) 
+    Group::Group(std::string index, int sem) : index(index), grades_num(0), sem(sem) 
     {
     	studs = Table<std::shared_ptr<Student>, std::string>(key);
     }
