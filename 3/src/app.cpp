@@ -195,18 +195,34 @@ namespace University
 
     void App::print_with_iter(std::ostream & c)
     {
-        auto sp_it = SpecIter<false>(groups.begin(), groups.end());
+        SpecIter<false> sp_it(groups.begin(), groups.end());
         c << "ALL STUDENT WITH ONE ITERATOR: " << std::endl;
-        for (sp_it; !sp_it.end(); sp_it++)
+        for (; !sp_it.end(); sp_it++)
         {
             if (!(*sp_it)) continue;
             c << (*sp_it)->get_surname() << std::endl;
         }
     }
 
+	template<bool is_const>
+	SpecIter<is_const>::SpecIter(TableIter<Group, std::string, is_const> it, TableIter<Group, std::string, is_const> it_end) : group_iter(it), group_end(it_end)
+	{
+	    if (!(*group_iter))
+	    {
+	    	do {
+	    	   group_iter++;
+	    	   if (group_iter == group_end)
+	    	      break;
+	    	} while (!(*group_iter));
+	    }  
+	    if (group_iter != group_end)
+	    	node = (*group_iter).get_studs().begin();            	
+	}
+	
     template<bool is_const>
     SpecIter<is_const>& SpecIter<is_const>::operator++() noexcept
     {
+    	node++;
         if (node == (*group_iter).get_studs().end())
         {
             do {
@@ -214,11 +230,10 @@ namespace University
                 if (group_iter == group_end)
                     break;
             } while (!(*group_iter));
+           
             if (group_iter != group_end)
                 node = (*group_iter).get_studs().begin();
         }
-        else
-            node++;
         return *this;
     }
 
@@ -226,6 +241,7 @@ namespace University
     SpecIter<is_const> SpecIter<is_const>::operator++(int) noexcept
     {
         SpecIter<is_const> res(node);
+        node++;
         if (node == (*group_iter).get_studs().end())
         {
             do {
@@ -236,8 +252,6 @@ namespace University
             if (group_iter != group_end)
                 node = (*group_iter).get_studs().begin();
         }
-        else
-            node++;
         return res;
     };
 }

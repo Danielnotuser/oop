@@ -29,9 +29,7 @@ namespace University
             typedef std::forward_iterator_tag iterator_category;
 
             // constructors
-            SpecIter() noexcept : node(nullptr) {};
-            SpecIter(TableIter<Group, std::string, is_const> it, TableIter<Group, std::string, is_const> it_end) :
-                    group_iter(it), group_end(it_end) {node = (*it).get_studs().begin();};
+            SpecIter(TableIter<Group, std::string, is_const> it, TableIter<Group, std::string, is_const> it_end);
             template<bool other_const>
             SpecIter(const SpecIter<other_const>& o) noexcept requires (is_const >= other_const) : node(o.node) {};
             // overload
