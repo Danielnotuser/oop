@@ -3,6 +3,7 @@
 #include <random>
 #include <algorithm>
 #include <thread>
+#include <future>
 
 #include "../lib/app.h"
 
@@ -91,11 +92,13 @@ namespace University
     	return res;
     }
 
-    void group_losers(std::mutex& res_mux, std::vector<std::shared_ptr<Student>> res, std::vector<Group> gr, int start, int end)
+
+    void losers(auto start, auto end, std::vector<std::shared_ptr<Student>> &res)
     {
-        for (int it = start; it < end; it++)
+        for (auto it = start; it != end; it++)
         {
-            Table <std::shared_ptr<Student>, std::string> studs = gr[it].get_studs();
+            if (!(*it)) continue;
+            Table <std::shared_ptr<Student>, std::string> studs = (*it).get_studs();
             for (auto it_s = studs.begin(); it_s != studs.end(); it_s++)
             {
                 if (!(*it_s) || (*it_s)->get_grades().empty()) continue;
@@ -105,11 +108,7 @@ namespace University
                 for (int i = 0; i < num; i++)
                     if (grades[i] <= 2) cnt++;
                 if (cnt >= 3)
-                {
-                    res_mux.lock();
                     res.push_back(*it_s);
-                    res_mux.unlock();
-                }
             }
         }
     }
@@ -117,24 +116,52 @@ namespace University
     std::vector <std::shared_ptr<Student>> App::multithread_losers()
     {
         std::vector<std::shared_ptr<Student>> res;
+        std::vector<std::future<std::vector<std::shared_ptr<Student>>>> results;
         auto nThreads = std::thread::hardware_concurrency();
-        std::vector<std::thread> threads(nThreads);
-        std::vector<Group> gr;
-        for (auto it = groups.begin(); it != groups.end(); it++)
+        auto dist = std::distance(groups.begin(), groups.end());
+        std::mutex mux;
+        for (size_t i = 0; i < nThreads; i++)
         {
-            if (*it) gr.push_back(*it);
+            size_t start_i = i * dist / nThreads;
+            size_t end_i = (i + 1) * dist / nThreads;
+            auto start = std::next(groups.begin(), start_i);
+            auto end = std::next(groups.begin(), end_i);
+            results.push_back(std::async([=, &mux](){
+                std::vector<std::shared_ptr<Student>> res;
+                losers(start, end, res);
+                return res;}));
         }
-        int gr_num = groups.get_num();
-        std::mutex res_mux;
-        for(size_t i = 0; i < nThreads; i++)
-        {
-            int start = i * gr_num / nThreads;
-            int end = (i + 1) * gr_num / nThreads;
-            threads[i] = std::thread([=, &res_mux, &res, &gr]() {group_losers(res_mux, res, gr, start, end);});
+        for(auto& vecF : results) {
+            auto vec = std::move(vecF.get());
+            for (size_t i = 0; i < vec.size(); i++)
+            {
+                res.push_back(vec[i]);
+            }
         }
-        for(auto& th : threads)
-            th.join();
+
         return res;
+    }
+
+
+    template<typename ItIn, typename ItOut>
+    ItOut even_mt(ItIn first, ItIn last, ItOut first_out) {
+        std::vector<std::future<std::vector<std::iter_value_t<ItIn>>>> results;
+        auto threadNum = std::thread::hardware_concurrency();
+        auto elements = std::distance(first, last);
+        results.reserve(elements);
+        for (size_t i = 0; i < threadNum; ++i) {
+            size_t start_i = i * elements / threadNum;
+            size_t end_i = (i + 1) * elements / threadNum;
+            auto start = std::next(first, start_i);
+            auto end = std::next(first, end_i);
+            results.push_back(std::async([=](){std::vector<std::iter_value_t<ItIn>> res;even(start, end, std::back_inserter(res));return res;}));
+        }
+
+        for(auto& vecF : results) {
+            auto vec = std::move(vecF.get());
+            first_out = std::move(vec.begin(), vec.end(), first_out);
+        }
+        return first_out;
     }
 
     void App::rand_marks()

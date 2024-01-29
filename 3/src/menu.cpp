@@ -5,6 +5,7 @@
 #include <cstring>
 #include <limits>
 #include <chrono>
+#include <random>
 #include "../lib/app.h"
 
 namespace University
@@ -43,8 +44,50 @@ namespace University
         return var;
     }
 
+
+    std::string random_string( size_t length )
+    {
+        auto randupper = []() -> char
+        {
+            const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const size_t max_index = (sizeof(charset) - 1);
+            return charset[ rand() % max_index ];
+        };
+        auto randlower = []() -> char
+        {
+            const char charset[] = "abcdefghijklmnopqrstuvwxyz";
+            const size_t max_index = (sizeof(charset) - 1);
+            return charset[ rand() % max_index ];
+        };
+        std::string str(length,0);
+        str[0] = randupper();
+        std::generate_n( str.begin() + 1, length, randlower);
+        return str;
+    }
+
+    void inp_rand(App &a)
+    {
+        std::ofstream fdata;
+        fdata.open("../etc/big.txt");
+        std::random_device r;
+        for (int i = 0; i < 5000; i++)
+        {
+            fdata << random_string(7) << std::endl;
+            fdata << r() % 8 + 3 << std::endl;
+            int num = 30;
+            fdata << num << std::endl;
+            for (int j = 0; j < num; j++)
+            {
+                fdata << random_string(10) << " " << random_string(1) << " " << r() % 16 + 5 << std::endl;
+            }
+        }
+
+    }
+
+
     void dlg_read_file(App& a)
     {
+//        inp_rand(a);
         std::ifstream fdata;
         std::string fname;
         safe_cin<std::string>(fname, "Write name of file: ");
@@ -280,6 +323,7 @@ namespace University
 
     void dlg_losers(App &a)
     {
+        constexpr auto max_precision{std::numeric_limits<long double>::digits10 + 1};
         std::cout << "Here are the losers, students with 3 or more F's:";
         const auto start{std::chrono::steady_clock::now()};
         std::vector<std::shared_ptr<Student>> losers = a.find_losers();
@@ -289,7 +333,7 @@ namespace University
         for (auto & loser : losers)
             std::cout << " " << loser->get_surname();
         std::cout << std::endl;
-        std::cout << "Time spent (without multithreading): " << elapsed_seconds << std::endl;
+        std::cout << "Time spent (without multithreading): " << std::setprecision(max_precision) << elapsed_seconds << std::endl;
         std::cout << "Here are the losers, students with 3 or more F's:";
         const auto start_m{std::chrono::steady_clock::now()};
         std::vector<std::shared_ptr<Student>> big_losers = a.multithread_losers();
@@ -299,6 +343,6 @@ namespace University
         for (auto & loser : big_losers)
             std::cout << " " << loser->get_surname();
         std::cout << std::endl;
-        std::cout << "Time spent (with multithreading): " << elapsed_seconds << std::endl;
+        std::cout << "Time spent (with multithreading): " << std::setprecision(max_precision) << elapsed_seconds_m << std::endl;
     }
 }
