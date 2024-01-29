@@ -349,4 +349,9 @@ namespace University
         // std::setprecision(max_precision) << 
         std::cout << "Time spent (with multithreading): " << elapsed_seconds_m << std::endl;
     }
+
+    void dlg_iter(App &a)
+    {
+        a.print_with_iter(std::cout);
+    }
 }

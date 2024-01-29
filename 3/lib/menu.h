@@ -19,6 +19,7 @@ namespace University
     void dlg_rand_marks(App&);
     void dlg_marks(App&);
     void dlg_sheet(App&);
+    void dlg_iter(App&);
 }
 
 #endif

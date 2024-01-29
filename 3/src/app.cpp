@@ -192,4 +192,52 @@ namespace University
             }
         }
     }
+
+    void App::print_with_iter(std::ostream & c)
+    {
+        auto sp_it = SpecIter<false>(groups.begin(), groups.end());
+        c << "ALL STUDENT WITH ONE ITERATOR: " << std::endl;
+        for (sp_it; !sp_it.end(); sp_it++)
+        {
+            if (!(*sp_it)) continue;
+            c << (*sp_it)->get_surname() << std::endl;
+        }
+    }
+
+    template<bool is_const>
+    SpecIter<is_const>& SpecIter<is_const>::operator++() noexcept
+    {
+        if (node == (*group_iter).get_studs().end())
+        {
+            do {
+                group_iter++;
+                if (group_iter == group_end)
+                    break;
+            } while (!(*group_iter));
+            if (group_iter != group_end)
+                node = (*group_iter).get_studs().begin();
+        }
+        else
+            node++;
+        return *this;
+    }
+
+    template<bool is_const>
+    SpecIter<is_const> SpecIter<is_const>::operator++(int) noexcept
+    {
+        SpecIter<is_const> res(node);
+        if (node == (*group_iter).get_studs().end())
+        {
+            do {
+                group_iter++;
+                if (group_iter == group_end)
+                    break;
+            } while (!(*group_iter));
+            if (group_iter != group_end)
+                node = (*group_iter).get_studs().begin();
+        }
+        else
+            node++;
+        return res;
+    };
 }

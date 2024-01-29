@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iterator>
+#include <memory>
 
 namespace University
 {
@@ -36,7 +37,8 @@ namespace University
             }
         };
     };
-	/**
+
+    /**
 	* @class TableIter Iterator of template Table class
 	*/
     template<class T, class K, bool is_const>
@@ -72,6 +74,8 @@ namespace University
         bool operator ==(const TableIter<T, K, other_const>& o) const noexcept {return node == o.node;};
 
     };
+
+
     /**
     * @class Table Class that contains array of lists with hash 
     * @brief T stands for type of value and K stands for type of key
@@ -148,6 +152,7 @@ namespace University
             /**
             * @brief Table print
             * @param c Stream for output
+            */
             void print(std::ostream& с);
             /**
             * @brief Find value by key

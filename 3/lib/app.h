@@ -10,6 +10,42 @@
 
 namespace University 
 {
+    class App;
+
+    template <bool is_const>
+    class SpecIter
+    {
+        private:
+            TableIter<Group, std::string, is_const> group_iter;
+            TableIter<Group, std::string, is_const> group_end;
+            TableIter<std::shared_ptr<Student>, std::string, is_const> node;
+            friend App;
+            explicit SpecIter(TableIter<std::shared_ptr<Student>, std::string, is_const> node): node(node) {}
+        public:
+            typedef ptrdiff_t difference_type;
+            typedef std::shared_ptr<Student> value_type;
+            typedef std::conditional_t<is_const, const std::shared_ptr<Student>, std::shared_ptr<Student>>* pointer;
+            typedef std::conditional_t<is_const, const std::shared_ptr<Student>, std::shared_ptr<Student>>& reference;
+            typedef std::forward_iterator_tag iterator_category;
+
+            // constructors
+            SpecIter() noexcept : node(nullptr) {};
+            SpecIter(TableIter<Group, std::string, is_const> it, TableIter<Group, std::string, is_const> it_end) :
+                    group_iter(it), group_end(it_end) {node = (*it).get_studs().begin();};
+            template<bool other_const>
+            SpecIter(const SpecIter<other_const>& o) noexcept requires (is_const >= other_const) : node(o.node) {};
+            // overload
+            template<bool other_const>
+            SpecIter& operator =(const SpecIter<other_const>& o) noexcept requires (is_const >= other_const) {node = o.node; return *this;};
+            SpecIter& operator++() noexcept;
+            SpecIter operator++(int) noexcept;
+            reference operator*() const noexcept {return *node;};
+            template<bool other_const>
+            bool operator ==(const SpecIter<other_const>& o) const noexcept {return node == o.node;};
+            // other
+            bool end() {return group_iter == group_end;};
+    };
+
 	/*
 	* @class The most important class of the hierarchy that contains table of groups and manipuilates with it
 	*/
@@ -51,12 +87,13 @@ namespace University
             Group &find_group(std::string &ind) {return groups.find(ind);}
             /*
             * @brief This method generated random marks for all students from all groups
-            */n
+            */
             void rand_marks();
             /*
             * @brief Method print all groups indexes with all students' surnames
             */
             void print(std::ostream&);
+            void print_with_iter(std::ostream&);
             /*
             * @brief Method print all groups indexes with all students' surnames and their grades
             */
