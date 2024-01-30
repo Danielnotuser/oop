@@ -18,6 +18,7 @@ namespace University
         private:
             TableIter<Group, std::string, is_const> group_iter;
             TableIter<Group, std::string, is_const> group_end;
+            Table <std::shared_ptr<Student>, std::string> studs;
             TableIter<std::shared_ptr<Student>, std::string, is_const> node;
             friend App;
             explicit SpecIter(TableIter<std::shared_ptr<Student>, std::string, is_const> node): node(node) {}
@@ -30,8 +31,7 @@ namespace University
 
             // constructors
             SpecIter(TableIter<Group, std::string, is_const> it, TableIter<Group, std::string, is_const> it_end);
-            template<bool other_const>
-            SpecIter(const SpecIter<other_const>& o) noexcept requires (is_const >= other_const) : node(o.node) {};
+            SpecIter(const SpecIter<is_const>& o) noexcept : group_iter(o.group_iter), group_end(o.group_end), studs(o.studs), node(o.node) {};
             // overload
             template<bool other_const>
             SpecIter& operator =(const SpecIter<other_const>& o) noexcept requires (is_const >= other_const) {node = o.node; return *this;};

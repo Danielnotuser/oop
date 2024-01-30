@@ -197,7 +197,7 @@ namespace University
     {
         SpecIter<false> sp_it(groups.begin(), groups.end());
         c << "ALL STUDENTS WITH ONE ITERATOR: " << std::endl;
-        for (; !sp_it.end(); sp_it++)
+        for (; !sp_it.end(); ++sp_it)
         {
             if (!(*sp_it)) continue;
             c << (*sp_it)->get_surname() << std::endl;
@@ -207,24 +207,23 @@ namespace University
 	template<bool is_const>
 	SpecIter<is_const>::SpecIter(TableIter<Group, std::string, is_const> it, TableIter<Group, std::string, is_const> it_end) : group_iter(it), group_end(it_end)
 	{
-	    if (!(*group_iter))
-	    {
-	    	do {
-	    	   group_iter++;
-	    	   if (group_iter == group_end)
-	    	      break;
-	    	} while (!(*group_iter));
-	    }
+        while (!(*group_iter))
+        {
+            if (group_iter == group_end)
+                break;
+            group_iter++;
+        }
 	    if (group_iter != group_end) {
-            node = (*group_iter).get_studs().begin();
+            studs = (*group_iter).get_studs();
+            node = studs.begin();
         }
 	}
 	
     template<bool is_const>
     SpecIter<is_const>& SpecIter<is_const>::operator++() noexcept
     {
-    	node++;
-        if (node == (*group_iter).get_studs().end())
+        node++;
+        if (node == studs.end())
         {
             do {
                 group_iter++;
@@ -233,7 +232,8 @@ namespace University
             } while (!(*group_iter));
 
             if (group_iter != group_end) {
-                node = (*group_iter).get_studs().begin();
+                studs = (*group_iter).get_studs();
+                node = studs.begin();
             }
         }
         return *this;
@@ -244,15 +244,17 @@ namespace University
     {
         SpecIter<is_const> res(node);
         node++;
-        if (node == (*group_iter).get_studs().end())
+        if (node == studs.end())
         {
             do {
                 group_iter++;
                 if (group_iter == group_end)
                     break;
             } while (!(*group_iter));
+
             if (group_iter != group_end) {
-                node = (*group_iter).get_studs().begin();
+                studs = (*group_iter).get_studs();
+                node = studs.begin();
             }
         }
         return res;
