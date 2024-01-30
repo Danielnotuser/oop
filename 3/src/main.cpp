@@ -27,6 +27,6 @@ int main()
             std::cerr << e.what() << std::endl;
         }
     }
-    std::cout << "See you later!";
+    std::cout << "See you later!" << std::endl;
 	return 0;
 }
