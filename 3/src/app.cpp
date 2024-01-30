@@ -196,8 +196,9 @@ namespace University
     void App::print_with_iter(std::ostream & c)
     {
         SpecIter<false> sp_it(groups.begin(), groups.end());
+        std::cout << (*groups.begin()).get_index();
         c << "ALL STUDENTS WITH ONE ITERATOR: " << std::endl;
-        for (; !sp_it.end(); sp_it++)
+        for (; !sp_it.end(); ++sp_it)
         {
             if (!(*sp_it)) continue;
             c << (*sp_it)->get_surname() << std::endl;
