@@ -19,6 +19,7 @@ namespace University
             void check_name();
         public:
             // constructors
+            Student() = default;
             /*
             * @brief Constructor with name and number of grades fields
             * @param surname Surname of student
@@ -59,6 +60,7 @@ namespace University
             * @param num New number of grades
             */
             void refresh_grades(int num) {grades.clear(); grades_num = num;};
+            explicit operator bool() {return !surname.empty();};
             // destructor
             virtual ~Student() = default;
     };

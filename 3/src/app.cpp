@@ -196,7 +196,7 @@ namespace University
     void App::print_with_iter(std::ostream & c)
     {
         SpecIter<false> sp_it(groups.begin(), groups.end());
-        c << "ALL STUDENT WITH ONE ITERATOR: " << std::endl;
+        c << "ALL STUDENTS WITH ONE ITERATOR: " << std::endl;
         for (; !sp_it.end(); sp_it++)
         {
             if (!(*sp_it)) continue;
@@ -214,9 +214,10 @@ namespace University
 	    	   if (group_iter == group_end)
 	    	      break;
 	    	} while (!(*group_iter));
-	    }  
-	    if (group_iter != group_end)
-	    	node = (*group_iter).get_studs().begin();            	
+	    }
+	    if (group_iter != group_end) {
+            node = (*group_iter).get_studs().begin();
+        }
 	}
 	
     template<bool is_const>
@@ -230,9 +231,10 @@ namespace University
                 if (group_iter == group_end)
                     break;
             } while (!(*group_iter));
-           
-            if (group_iter != group_end)
+
+            if (group_iter != group_end) {
                 node = (*group_iter).get_studs().begin();
+            }
         }
         return *this;
     }
@@ -249,8 +251,9 @@ namespace University
                 if (group_iter == group_end)
                     break;
             } while (!(*group_iter));
-            if (group_iter != group_end)
+            if (group_iter != group_end) {
                 node = (*group_iter).get_studs().begin();
+            }
         }
         return res;
     };
